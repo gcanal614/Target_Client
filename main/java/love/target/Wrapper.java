@@ -19,7 +19,7 @@ public class Wrapper {
     public static final Minecraft mc = Minecraft.getMinecraft();
     private static final Logger<Object> logger = LoggerCreator.getLoggerObject(Wrapper.class);
     private static final String CLIENT_NAME = "Target";
-    private static final String CLIENT_VERSION = "Beta -> 210518";
+    private static final String CLIENT_VERSION = "Beta -> 210518 #0";
     private static final String CLIENT_FILE_PATH = Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/target/";
     private static final Config NORMAL_CONFIG = new Config("",true);
     private static final Wrapper Instance = new Wrapper();

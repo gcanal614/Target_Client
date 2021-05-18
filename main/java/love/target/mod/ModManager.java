@@ -3,10 +3,7 @@ package love.target.mod;
 import com.utils.ObjectUtils;
 import love.target.command.CommandManager;
 import love.target.command.commands.ModValueSetCommand;
-import love.target.mod.mods.fight.AntiBot;
-import love.target.mod.mods.fight.AutoArmor;
-import love.target.mod.mods.fight.KillAura;
-import love.target.mod.mods.fight.Velocity;
+import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
@@ -31,7 +28,7 @@ public class ModManager {
      */
     public static void init() {
         /* FIGHT */
-        registerMods(new KillAura(),new Velocity(),new AntiBot());
+        registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup());
         /* VISUAL */
         registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList());
         /* MOVE */

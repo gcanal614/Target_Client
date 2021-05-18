@@ -7,10 +7,7 @@ import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
-import love.target.mod.mods.visual.ESP;
-import love.target.mod.mods.visual.HUD;
-import love.target.mod.mods.visual.NightVision;
-import love.target.mod.mods.visual.PlayerList;
+import love.target.mod.mods.visual.*;
 import love.target.mod.mods.world.Scaffold;
 import love.target.render.screen.clickgui.ClickGui;
 import net.minecraft.client.Minecraft;
@@ -30,7 +27,7 @@ public class ModManager {
         /* FIGHT */
         registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList());
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
         /* ITEM */

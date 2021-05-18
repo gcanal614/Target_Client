@@ -19,7 +19,7 @@ public class HUD extends Mod {
     @EventTarget
     public void on2D(Event2D e) {
         for (Designer designer : GuiDesigner.designers) {
-            if (designer.getDesignerType() != Designer.DesignerType.PLAYER_LIST) {
+            if (designer.getDesignerType() != Designer.DesignerType.PLAYER_LIST && designer.getDesignerType() != Designer.DesignerType.SPEED_LIST) {
                 designer.draw();
             }
         }

@@ -6,6 +6,7 @@ import love.target.designer.Designer;
 import love.target.designer.designers.ArrayListDesigner;
 import love.target.designer.designers.LogoDesigner;
 import love.target.designer.designers.PlayerListDesigner;
+import love.target.designer.designers.SpeedListDesigner;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
@@ -122,6 +123,9 @@ public class ConfigManager {
                         break;
                     case PLAYER_LIST:
                         GuiDesigner.addDesigner(new PlayerListDesigner(designerX,designerY));
+                        break;
+                    case SPEED_LIST:
+                        GuiDesigner.addDesigner(new SpeedListDesigner(designerX,designerY));
                         break;
                 }
             }

@@ -33,6 +33,8 @@ public class Wrapper {
     public void onStartGame() {
         initializationManagers();
         ConfigManager.loadConfig(NORMAL_CONFIG);
+
+        getLogger().info("Client的版本为" + getClientVersion());
     }
 
     /**

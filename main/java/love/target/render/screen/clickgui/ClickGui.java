@@ -290,6 +290,16 @@ public class ClickGui extends GuiScreen {
             mc.displayGuiScreen(new GuiDesigner());
             selectType = ClickType.HOME;
         }
+
+        //this.drawCursor(mouseX,mouseY);
+    }
+
+    private void drawCursor(int mouseX,int mouseY) {
+        FontManager.cursor.drawString("a",mouseX,mouseY,new Color(0xFFFF00FF, true).getRGB());
+    }
+
+    private void hideMouse() {
+        Mouse.setGrabbed(true);
     }
 
     @Override
@@ -306,5 +316,17 @@ public class ClickGui extends GuiScreen {
         if (selectType == ClickType.HOME && this.search != null) {
             this.search.mouseClicked(mouseX, mouseY, mouseButton);
         }
+    }
+
+    @Override
+    public void updateScreen() {
+        //hideMouse();
+        super.updateScreen();
+    }
+
+    @Override
+    public void onGuiClosed() {
+        //Mouse.setGrabbed(false);
+        super.onGuiClosed();
     }
 }

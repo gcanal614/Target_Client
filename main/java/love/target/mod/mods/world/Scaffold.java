@@ -2,9 +2,11 @@ package love.target.mod.mods.world;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import love.target.eventapi.EventTarget;
+import love.target.eventapi.types.Priority;
 import love.target.events.Event2D;
 import love.target.events.EventPostUpdate;
 import love.target.events.EventPreUpdate;
+import love.target.events.EventTick;
 import love.target.mod.Mod;
 import love.target.mod.value.values.BooleanValue;
 import love.target.render.font.FontManager;
@@ -34,6 +36,7 @@ public class Scaffold extends Mod {
     private final BooleanValue tower = new BooleanValue("Tower", true);
     private final BooleanValue swing = new BooleanValue("Swing", false);
     private final BooleanValue movetower = new BooleanValue("MoveTower", true);
+    public static final BooleanValue noSprint = new BooleanValue("NoSprint", false);
     public static final List<Block> invalidBlocks = Arrays.asList(Blocks.enchanting_table, Blocks.furnace, Blocks.carpet, Blocks.crafting_table, Blocks.trapped_chest, Blocks.chest, Blocks.dispenser, Blocks.air, Blocks.water, Blocks.lava, Blocks.flowing_water, Blocks.flowing_lava, Blocks.sand, Blocks.snow_layer, Blocks.torch, Blocks.anvil, Blocks.jukebox, Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.noteblock, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_slab, Blocks.wooden_slab, Blocks.stone_slab2, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.yellow_flower, Blocks.red_flower, Blocks.anvil, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.cactus, Blocks.ladder, Blocks.web, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest);
     private final List<Block> validBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava);
     private final BlockPos[] blockPositions = new BlockPos[]{new BlockPos(-1, 0, 0), new BlockPos(1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(0, 0, 1)};
@@ -47,7 +50,7 @@ public class Scaffold extends Mod {
 
     public Scaffold() {
         super("Scaffold", Category.WORLD);
-        this.addValues(this.tower, this.movetower, this.swing);
+        this.addValues(this.tower, this.movetower, this.swing,this.noSprint);
     }
 
     @Override
@@ -59,6 +62,13 @@ public class Scaffold extends Mod {
     @Override
     public void onDisable() {
         mc.player.stepHeight = 0.6f;
+    }
+
+    @EventTarget(value = Priority.LOWEST)
+    public void onTick(EventTick e) {
+        if (noSprint.getValue()) {
+            mc.player.setSprinting(false);
+        }
     }
 
     @EventTarget

@@ -26,7 +26,6 @@ public class HUD extends Mod {
         int ychat = mc.ingameGUI.getChatGUI().getChatOpen() ? 4 : -10;
         String xyz = "X:" + (int)mc.player.posX + " Y:" + (int)mc.player.posY + " Z:" + (int)mc.player.posZ + " Blocks:" + Wrapper.speedBsString(mc.player,2);
         FontManager.yaHei16.drawStringWithShadow(xyz, 3, e.getScaledResolution().getScaledHeight() - FontManager.yaHei16.FONT_HEIGHT - 12 - ychat, -1);
-
         int potionTextY = 0;
         for (PotionEffect effect : mc.player.getActivePotionEffects()) {
             Potion potion = Potion.potionTypes[effect.getPotionID()];

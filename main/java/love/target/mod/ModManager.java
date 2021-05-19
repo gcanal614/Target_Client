@@ -27,7 +27,7 @@ public class ModManager {
         /* FIGHT */
         registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting());
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
         /* ITEM */

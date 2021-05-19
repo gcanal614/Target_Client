@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer;
 
+import love.target.mod.ModManager;
+import love.target.mod.mods.visual.BlockHitting;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -414,10 +416,8 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            this.transformFirstPersonSwordBlock(f, mc.player.getSwingProgress(partialTicks));
-                            this.doBlockTransformations();
+                            doSwordBlock(f,f1,partialTicks);
                             break;
-
                         case BOW:
                             this.transformFirstPersonItem(f, mc.player.getSwingProgress(partialTicks));
                             this.doBowTransformations(partialTicks, abstractclientplayer);
@@ -439,6 +439,36 @@ public class ItemRenderer
             GlStateManager.popMatrix();
             GlStateManager.disableRescaleNormal();
             RenderHelper.disableStandardItemLighting();
+        }
+    }
+
+    private void doSwordBlock(float f,float f1,float partialTicks) {
+        if (ModManager.getModEnableByName("BlockHitting")) {
+            GL11.glTranslated(BlockHitting.translatedX.getValue(), BlockHitting.translatedY.getValue(), BlockHitting.translatedZ.getValue());
+            float var = MathHelper.sin(MathHelper.sqrt_float(f1) * (float) Math.PI);
+            switch (BlockHitting.mode.getValue()) {
+                case "E4h1b1t10n":
+                    this.transformFirstPersonItem(f / 2.0f, 0.0f);
+                    GL11.glRotatef(-var * 40.0f / 2.0f, var / 2.0f, -0.0f, 9.0f);
+                    GL11.glRotatef(-var * 30.0f, 1.0f, var / 2.0f, -0.0f);
+                    this.doBlockTransformations();
+                    break;
+                case "Je110":
+                    this.transformFirstPersonItem(f / 2.0f, 0.0f);
+                    GL11.glRotatef(-var * 40.0f / 4.0f,- (float) (var / 2.0f), -0.0f, -(float) 15.0f);
+                    GL11.glRotatef(-var * 30.0f, -(float) 1.0f,- (float) (var / 2.0f), -0.0f);
+                    GlStateManager.rotate(-15, 1.0F, 0.0F, -0.0F);
+                    this.doBlockTransformations();
+                    break;
+                case "Vanilla":
+                default:
+                    this.transformFirstPersonSwordBlock(f, mc.player.getSwingProgress(partialTicks));
+                    this.doBlockTransformations();
+                    break;
+            }
+        } else {
+            this.transformFirstPersonSwordBlock(f, mc.player.getSwingProgress(partialTicks));
+            this.doBlockTransformations();
         }
     }
 

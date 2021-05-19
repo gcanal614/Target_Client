@@ -12,11 +12,14 @@ public class FontManager {
     public static FontDrawer yaHei20;
     public static FontDrawer yaHei24;
 
+    public static FontDrawer cursor;
+
     public static void init() {
         yaHei16 = FontManager.getFont("msyh", 16.0f, FontType.TTF);
         yaHei18 = FontManager.getFont("msyh", 18.0f, FontType.TTF);
         yaHei20 = FontManager.getFont("msyh", 20.0f, FontType.TTF);
         yaHei24 = FontManager.getFont("msyh", 24.0f, FontType.TTF);
+        cursor = FontManager.getFont("cursor",20.0f,FontType.TTF);
     }
 
     private static FontDrawer getFont(String fontName, float size, FontType type) {

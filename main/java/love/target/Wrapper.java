@@ -9,6 +9,7 @@ import love.target.config.ConfigManager;
 import love.target.events.EventPreUpdate;
 import love.target.mod.ModManager;
 import love.target.render.font.FontManager;
+import love.target.utils.LaunchUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
@@ -35,6 +36,7 @@ public class Wrapper {
         ConfigManager.loadConfig(NORMAL_CONFIG);
 
         getLogger().info("Client的版本为" + getClientVersion());
+        getLogger().warn("本次启动浪费了" + (LaunchUtils.getLaunchTime() / 1000L) + "秒的人生");
     }
 
     /**

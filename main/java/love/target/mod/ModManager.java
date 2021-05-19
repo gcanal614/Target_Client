@@ -7,6 +7,7 @@ import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
+import love.target.mod.mods.player.Terminator;
 import love.target.mod.mods.visual.*;
 import love.target.mod.mods.world.Scaffold;
 import love.target.render.screen.clickgui.ClickGui;
@@ -30,6 +31,8 @@ public class ModManager {
         registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting());
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
+        /* PLAYER */
+        registerMods(new Terminator());
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor());
         /* OTHER */

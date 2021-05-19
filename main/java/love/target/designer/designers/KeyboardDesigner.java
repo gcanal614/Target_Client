@@ -21,6 +21,15 @@ public class KeyboardDesigner extends Designer {
     @Override
     public void draw() {
 
+        for (Key key : KEYS) {
+            if (key.getType() == KeyType.KEYBOARD) {
+                if (key.getKeyCode() == Minecraft.getMinecraft().gameSettings.keyBindForward.getKeyCode()) {
+
+                }
+            } else if (key.getType() == KeyType.MOUSE) {
+
+            }
+        }
     }
 
     @Override

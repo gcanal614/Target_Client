@@ -816,7 +816,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
     public void sendPacket(Packet<?> p_147297_1_)
     {
-        EventPacket eventPacket = new EventPacket(p_147297_1_);
+        EventPacket eventPacket = new EventPacket(p_147297_1_,true);
         EventManager.call(eventPacket);
 
         if (!eventPacket.isCancelled()) {

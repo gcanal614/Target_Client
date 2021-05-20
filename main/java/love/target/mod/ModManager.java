@@ -7,6 +7,8 @@ import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
+import love.target.mod.mods.player.AntiVoid;
+import love.target.mod.mods.player.NoFall;
 import love.target.mod.mods.player.Terminator;
 import love.target.mod.mods.visual.*;
 import love.target.mod.mods.world.Scaffold;
@@ -32,7 +34,7 @@ public class ModManager {
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
         /* PLAYER */
-        registerMods(new Terminator());
+        registerMods(new Terminator(),new AntiVoid(),new NoFall());
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor());
         /* OTHER */

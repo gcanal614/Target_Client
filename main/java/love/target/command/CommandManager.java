@@ -1,9 +1,7 @@
 package love.target.command;
 
 import love.target.Wrapper;
-import love.target.command.commands.BindCommand;
-import love.target.command.commands.HelpCommand;
-import love.target.command.commands.ToggleCommand;
+import love.target.command.commands.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +11,13 @@ public class CommandManager {
     private static final List<Command> commands = new CopyOnWriteArrayList<>();
 
     public static void init() {
-        registerCommands(new HelpCommand(),new BindCommand(),new ToggleCommand());
+        registerCommands(new HelpCommand(),
+                new BindCommand(),
+                new ToggleCommand(),
+                new ReportCommand(),
+                new RegisterCommand(),
+                new LoginCommand()
+        );
     }
 
     public static void registerCommands(Command... commands) {

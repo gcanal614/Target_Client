@@ -28,7 +28,7 @@ public class BindCommand extends Command {
                 Wrapper.sendMessage("No Found Mod");
             }
         } else {
-            Wrapper.sendMessage("try -bind <module> <key>");
+            Wrapper.sendMessage("Try -bind <module> <key>");
         }
         super.run(args);
     }

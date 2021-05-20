@@ -1,6 +1,9 @@
 package love.target.command;
 
+import net.minecraft.client.Minecraft;
+
 public class Command {
+    protected Minecraft mc = Minecraft.getMinecraft();
     private final String name;
     private final String help;
     private final boolean showHelp;

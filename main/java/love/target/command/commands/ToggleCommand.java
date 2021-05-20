@@ -24,5 +24,6 @@ public class ToggleCommand extends Command {
         } else {
             Wrapper.sendMessage("Try -toggle <module>");
         }
+        super.run(args);
     }
 }

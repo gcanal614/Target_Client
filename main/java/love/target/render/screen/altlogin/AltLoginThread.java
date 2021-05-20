@@ -22,7 +22,7 @@ public class AltLoginThread extends Thread {
         this.status = "§eWaiting...";
     }
 
-    private Session createSession(String username, String password) {
+    public static Session createSession(String username, String password) {
         YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
         YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication)service.createUserAuthentication(Agent.MINECRAFT);
         auth.setUsername(username);
@@ -47,14 +47,13 @@ public class AltLoginThread extends Thread {
             this.status = "§aLogged in. (" + this.username + " - offline name)";
         } else {
             this.status = "§eLogging in...";
-            Session auth = this.createSession(this.username, this.password);
+            Session auth = createSession(this.username, this.password);
             if (auth == null) {
                 this.status = "§cLogin failed!";
             } else {
                 this.status = "§aLogged in. (" + auth.getUsername() + ")";
                 this.mc.session = auth;
             }
-
         }
     }
 

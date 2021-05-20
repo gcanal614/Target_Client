@@ -5,38 +5,32 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 
-public class GuiAltLogin extends GuiScreen {
+public class GuiAltLogin extends GuiScreen implements LoginOrAdd {
     private GuiTextField password;
     private final GuiScreen previousScreen;
     private AltLoginThread thread;
     private GuiTextField username;
     private GuiTextField combined;
+    private final AltEnum altEnum;
+    private String ssss;
 
-    public GuiAltLogin(GuiScreen previousScreen) {
+    public GuiAltLogin(GuiScreen previousScreen,AltEnum altEnum) {
         this.previousScreen = previousScreen;
+        this.altEnum = altEnum;
     }
 
     protected void actionPerformed(GuiButton button) {
         String data;
-        switch(button.id) {
+        switch (button.id) {
             case 0:
-                if (this.combined.getText().isEmpty()) {
-                    this.thread = new AltLoginThread(this.username.getText(), this.password.getText());
-                } else if (!this.combined.getText().isEmpty() && this.combined.getText().contains(":")) {
-                    data = this.combined.getText().split(":")[0];
-                    String p = this.combined.getText().split(":")[1];
-                    this.thread = new AltLoginThread(data.replaceAll(" ", ""), p.replaceAll(" ", ""));
-                } else {
-                    this.thread = new AltLoginThread(this.username.getText(), this.password.getText());
-                }
-
-                this.thread.start();
+                this.onLogin();
                 break;
             case 1:
                 this.mc.displayGuiScreen(this.previousScreen);
@@ -58,7 +52,58 @@ public class GuiAltLogin extends GuiScreen {
                 this.username.setText(Wrapper.getRandomString(7));
                 this.password.setText("");
         }
+    }
 
+    @Override
+    public void onLogin() {
+        String data;
+
+        switch (altEnum) {
+            case LOGIN:
+                if (this.combined.getText().isEmpty()) {
+                    this.thread = new AltLoginThread(this.username.getText(), this.password.getText());
+                } else if (!this.combined.getText().isEmpty() && this.combined.getText().contains(":")) {
+                    data = this.combined.getText().split(":")[0];
+                    String p = this.combined.getText().split(":")[1];
+                    this.thread = new AltLoginThread(data.replaceAll(" ", ""), p.replaceAll(" ", ""));
+                } else {
+                    this.thread = new AltLoginThread(this.username.getText(), this.password.getText());
+                }
+
+                this.thread.start();
+                break;
+            case ADD:
+                String a;
+                String pa;
+
+                if (this.combined.getText().isEmpty()) {
+                    a = username.getText();
+                    pa = password.getText();
+                } else if (!this.combined.getText().isEmpty() && this.combined.getText().contains(":")) {
+                    data = this.combined.getText().split(":")[0];
+                    String p = this.combined.getText().split(":")[1];
+                    a = data.replaceAll(" ", "");
+                    pa = p.replaceAll(" ", "");
+                } else {
+                    a = username.getText();
+                    pa = password.getText();
+                }
+
+                if (pa.isEmpty()) {
+                    GuiAltManager.getAlts().add(new Alt(a,"NULL_PASSWORD",a));
+                    ssss = "登陆成功! " + a;
+                } else {
+                    Session s = AltLoginThread.createSession(a, pa);
+
+                    if (s == null) {
+                        ssss = "登录失败!";
+                    } else {
+                        GuiAltManager.getAlts().add(new Alt(a, pa, s.getProfile().getName()));
+                        ssss = "登陆成功! " + s.getProfile().getName();
+                    }
+                }
+                break;
+        }
     }
 
     public void drawScreen(int x, int y, float z) {
@@ -68,7 +113,11 @@ public class GuiAltLogin extends GuiScreen {
         this.password.drawTextBox();
         this.combined.drawTextBox();
         Wrapper.mc.fontRenderer.drawCenteredString("Alt Login", (float)(this.width / 2), 20.0F, -1);
-        Wrapper.mc.fontRenderer.drawCenteredString(this.thread == null ? "§eWaiting..." : this.thread.getStatus(), (float)(this.width / 2), 29.0F, -1);
+        if (altEnum == AltEnum.LOGIN) {
+            Wrapper.mc.fontRenderer.drawCenteredString(this.thread == null ? "§eWaiting..." : this.thread.getStatus(), (float) (this.width / 2), 29.0F, -1);
+        } else if (altEnum == AltEnum.ADD) {
+            Wrapper.mc.fontRenderer.drawCenteredString(this.ssss == null ? "§eWaiting..." : ssss, (float) (this.width / 2), 29.0F, -1);
+        }
         if (this.username.getText().isEmpty() && !this.username.isFocused()) {
             Wrapper.mc.fontRenderer.drawStringWithShadow("Username / E-Mail", (float)(this.width / 2 - 96), 66.0F, -7829368);
         }

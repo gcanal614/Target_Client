@@ -3,6 +3,9 @@ package net.minecraft.util;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.util.UUIDTypeAdapter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,6 +15,8 @@ public class Session
     private final String playerID;
     private final String token;
     private final Session.Type sessionType;
+    private final ResourceLocation head;
+    private final ThreadDownloadImageData imageData;
 
     public Session(String usernameIn, String playerIDIn, String tokenIn, String sessionTypeIn)
     {
@@ -19,6 +24,12 @@ public class Session
         this.playerID = playerIDIn;
         this.token = tokenIn;
         this.sessionType = Session.Type.setSessionType(sessionTypeIn);
+        this.head = new ResourceLocation("heads/" + usernameIn);
+        this.imageData = new ThreadDownloadImageData(null,"https://minotar.net/avatar/" + usernameIn,null,null);
+    }
+
+    public void loadHead() {
+        Minecraft.getMinecraft().getTextureManager().loadTexture(this.head, imageData);
     }
 
     public String getSessionID()
@@ -52,6 +63,14 @@ public class Session
         {
             return new GameProfile((UUID)null, this.getUsername());
         }
+    }
+
+    public ResourceLocation getHead() {
+        return head;
+    }
+
+    public ThreadDownloadImageData getImageData() {
+        return imageData;
     }
 
     /**

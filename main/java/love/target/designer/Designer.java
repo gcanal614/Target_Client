@@ -1,6 +1,6 @@
 package love.target.designer;
 
-import love.target.designer.rightclickmenu.RightClickMenu;
+import love.target.other.rightclickmenu.RightClickMenu;
 import love.target.render.screen.designer.GuiDesigner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;

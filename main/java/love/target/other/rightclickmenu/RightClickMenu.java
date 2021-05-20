@@ -1,4 +1,4 @@
-package love.target.designer.rightclickmenu;
+package love.target.other.rightclickmenu;
 
 import love.target.other.PressEvent;
 
@@ -17,7 +17,7 @@ public abstract class RightClickMenu {
 
     public abstract void onOpen();
 
-    public abstract void draw(int var1, int var2);
+    public abstract void draw(int mouseX, int mouseY);
 
     protected static class RightClickMenuButton {
         private final String buttonText;

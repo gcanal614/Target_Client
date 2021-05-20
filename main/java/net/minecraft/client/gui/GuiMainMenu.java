@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import love.target.render.screen.altlogin.GuiAltLogin;
+import love.target.render.screen.altlogin.GuiAltManager;
 import org.apache.commons.io.Charsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -358,7 +359,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
 
         if (button.id == 114514) {
-            mc.displayGuiScreen(new GuiAltLogin(this));
+            mc.displayGuiScreen(new GuiAltManager(this));//new GuiAltLogin(this)
         }
     }
 

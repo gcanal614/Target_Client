@@ -1,8 +1,8 @@
 package love.target.designer.designers;
 
 import love.target.designer.Designer;
-import love.target.designer.rightclickmenu.NormalRightClickMenu;
-import love.target.designer.rightclickmenu.RightClickMenu;
+import love.target.other.rightclickmenu.NormalRightClickMenu;
+import love.target.other.rightclickmenu.RightClickMenu;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 

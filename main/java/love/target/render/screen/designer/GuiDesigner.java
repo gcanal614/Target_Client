@@ -1,7 +1,7 @@
 package love.target.render.screen.designer;
 
 import love.target.designer.Designer;
-import love.target.designer.rightclickmenu.RightClickMenu;
+import love.target.other.rightclickmenu.RightClickMenu;
 import love.target.render.screen.designer.menu.DesignerMenu;
 import love.target.render.screen.designer.menu.menus.DesignerMainMenu;
 import net.minecraft.client.gui.GuiScreen;

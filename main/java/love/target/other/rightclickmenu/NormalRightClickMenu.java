@@ -1,4 +1,4 @@
-package love.target.designer.rightclickmenu;
+package love.target.other.rightclickmenu;
 
 import love.target.Wrapper;
 import love.target.render.font.FontManager;
@@ -22,9 +22,7 @@ public class NormalRightClickMenu extends RightClickMenu {
             GuiDesigner.designers.remove(GuiDesigner.selectedDesigner);
             GuiDesigner.selectedDesigner = null;
         }));
-        this.buttons.add(new RightClickMenu.RightClickMenuButton("取消", () -> {
-            GuiDesigner.displayingMenu = null;
-        }));
+        this.buttons.add(new RightClickMenu.RightClickMenuButton("取消", () -> GuiDesigner.displayingMenu = null));
     }
 
     @Override

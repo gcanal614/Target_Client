@@ -8,6 +8,7 @@ import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
 import love.target.mod.mods.other.TestMod;
+import love.target.mod.mods.other.Timer;
 import love.target.mod.mods.player.AntiVoid;
 import love.target.mod.mods.player.ChatBypass;
 import love.target.mod.mods.player.NoFall;
@@ -40,7 +41,7 @@ public class ModManager {
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor());
         /* OTHER */
-        registerMods(new Teams(),new TestMod());
+        registerMods(new Teams(),new TestMod(),new Timer());
         /* WORLD */
         registerMods(new Scaffold());
 

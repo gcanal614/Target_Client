@@ -8,6 +8,7 @@ import love.target.events.EventPreUpdate;
 import love.target.events.EventTick;
 import love.target.mod.Mod;
 import love.target.mod.value.values.BooleanValue;
+import love.target.mod.value.values.NumberValue;
 import love.target.render.font.FontManager;
 import love.target.utils.MoveUtils;
 import love.target.utils.TimerUtil;
@@ -29,10 +30,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Scaffold extends Mod {
+    private final NumberValue towerBoostValue = new NumberValue("TowerBoost",1.0f,1.0f,5.0f,0.1f);
     private final BooleanValue tower = new BooleanValue("Tower", true);
     private final BooleanValue swing = new BooleanValue("Swing", false);
     private final BooleanValue movetower = new BooleanValue("MoveTower", true);
-    public static final BooleanValue noSprint = new BooleanValue("NoSprint", false);
+    public final BooleanValue noSprint = new BooleanValue("NoSprint", false);
     public static final List<Block> invalidBlocks = Arrays.asList(Blocks.enchanting_table, Blocks.furnace, Blocks.carpet, Blocks.crafting_table, Blocks.trapped_chest, Blocks.chest, Blocks.dispenser, Blocks.air, Blocks.water, Blocks.lava, Blocks.flowing_water, Blocks.flowing_lava, Blocks.sand, Blocks.snow_layer, Blocks.torch, Blocks.anvil, Blocks.jukebox, Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.noteblock, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_slab, Blocks.wooden_slab, Blocks.stone_slab2, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.yellow_flower, Blocks.red_flower, Blocks.anvil, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.cactus, Blocks.ladder, Blocks.web, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest);
     private final List<Block> validBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava);
     private final BlockPos[] blockPositions = new BlockPos[]{new BlockPos(-1, 0, 0), new BlockPos(1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(0, 0, 1)};
@@ -46,7 +48,7 @@ public class Scaffold extends Mod {
 
     public Scaffold() {
         super("Scaffold", Category.WORLD);
-        this.addValues(this.tower, this.movetower, this.swing,this.noSprint);
+        this.addValues(towerBoostValue,this.tower, this.movetower, this.swing,this.noSprint);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class Scaffold extends Mod {
     @Override
     public void onDisable() {
         mc.player.stepHeight = 0.6f;
+        mc.timer.timerSpeed = 1.0f;
     }
 
     @EventTarget(value = Priority.LOWEST)
@@ -91,10 +94,16 @@ public class Scaffold extends Mod {
         mc.player.renderYawOffset = rotationYawSave;
         mc.player.rotationPitchHead = 79.44f;
         event.setPitch(79.44f);
+
+        if (mc.player.onGround) {
+            mc.timer.timerSpeed = 1.0f;
+        }
+
         if (this.getBlockCount() <= 0) {
             int spoofSlot = this.getBestSpoofSlot();
             this.getBlock(spoofSlot);
         }
+
         double yDif = 1.0;
         BlockData data = null;
         for (double posY = mc.player.posY - 1.0; posY > 0.0; posY -= 1.0) {
@@ -138,6 +147,10 @@ public class Scaffold extends Mod {
                     mc.player.motionX = 0.0;
                     mc.player.motionZ = 0.0;
                     mc.player.motionY = 0.41982;
+                }
+
+                if (!mc.player.onGround) {
+                    mc.timer.timerSpeed = towerBoostValue.getValue().floatValue();
                 }
             }
         }

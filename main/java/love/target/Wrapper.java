@@ -5,7 +5,6 @@ import com.utils.logger.LoggerCreator;
 import love.target.command.CommandManager;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
-import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.other.object.Link;
 import love.target.render.font.FontManager;
@@ -120,7 +119,7 @@ public class Wrapper {
         double xDif = entity.posX - entity.prevPosX;
         double zDif = entity.posZ - entity.prevPosZ;
         double lastDist = Math.sqrt(xDif * xDif + zDif * zDif) * 20.0;
-        return String.format("%." + format + "f", lastDist);
+        return String.format("%." + format + "f", lastDist * mc.timer.timerSpeed);
     }
 
     public static String getClientName() {

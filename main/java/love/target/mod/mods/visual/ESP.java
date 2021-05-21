@@ -1,12 +1,10 @@
 package love.target.mod.mods.visual;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import love.target.eventapi.EventTarget;
 import love.target.events.Event3D;
 import love.target.mod.Mod;
 import love.target.mod.mods.other.Teams;
 import love.target.mod.value.values.BooleanValue;
-import love.target.mod.value.values.NumberValue;
 import love.target.utils.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -14,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -71,7 +70,7 @@ public class ESP extends Mod {
             RenderUtils.drawBorderedRect((float)xLeft - 3.0f - DISTANCE * 0.2f, (float)yDown - (float)(yDown - yUp) * Math.min(1.0f, entity.getHealth() / 20.0f), (float)xLeft - 2.0f, (float)yDown, 0.15f, Color.BLACK.getRGB(), COLOR);
             int c = entity.getHealth() < 5.0f ? new Color(255, 20, 10).getRGB() : ((double)entity.getHealth() < 12.5 ? new Color(16774441).getRGB() : new Color(0, 255, 0).getRGB());
             mc.fontRenderer.drawStringWithShadow(entity.getName(), (int)(xLeft / 2.0 - (double)(mc.fontRenderer.getStringWidth(entity.getName()) / 2)) + 9, (int)yUp - 15, Teams.isOnSameTeam(entity) ? new Color(0, 255, 0).getRGB() : new Color(255, 0, 0).getRGB());
-            mc.fontRenderer.drawStringWithShadow(String.valueOf((int)entity.getHealth()) + ChatFormatting.RED + " ♥", (float)xLeft - (float)mc.fontRenderer.getStringWidth(String.valueOf((int)entity.getHealth()) + ChatFormatting.RED + " ♥") - 10.0f, (float)yDown / 2.0f, c);
+            mc.fontRenderer.drawStringWithShadow(String.valueOf((int)entity.getHealth()) + EnumChatFormatting.RED + " ♥", (float)xLeft - (float)mc.fontRenderer.getStringWidth(String.valueOf((int)entity.getHealth()) + EnumChatFormatting.RED + " ♥") - 10.0f, (float)yDown / 2.0f, c);
             mc.fontRenderer.drawStringWithShadow(entity.getHeldItem() == null ? "" : entity.getHeldItem().getDisplayName(), (int)(xLeft / 2.0 - (double)(mc.fontRenderer.getStringWidth(entity.getHeldItem() == null ? "" : entity.getHeldItem().getDisplayName()) / 2)), (int)yDown + 10, new Color(0, 255, 0).getRGB());
             String svar = "XYZ: " + (int)entity.posX + " " + (int)entity.posY + " " + (int)entity.posZ + " 距离: " + (int)DISTANCE + "m";
             int y2 = 0;

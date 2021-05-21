@@ -51,6 +51,7 @@ public class KillAura extends Mod {
     private final TimerUtil rotationTimerUtil = new TimerUtil();
     private final ModeValue mode = new ModeValue("Mode", "Single");
     private final ModeValue prmode = new ModeValue("TargetMode", "Range");
+    private final ModeValue rotationMode = new ModeValue("RotationMode", "Normal",new String[]{"Normal","Sigma"});
     private final NumberValue maxCPS = new NumberValue("MaxCPS", 14, 1, 20, 1);
     private final NumberValue minCPS = new NumberValue("MinCPS", 10, 1, 20, 1);
     private final NumberValue hurtTime = new NumberValue("HurtTime", 10, 1, 20, 1);
@@ -70,7 +71,7 @@ public class KillAura extends Mod {
         super("KillAura", Category.FIGHT);
         this.mode.addModes("Single", "Switch");
         this.prmode.addModes("Range", "Fov", "Health", "Angle");
-        this.addValues(this.mode, this.prmode, this.maxCPS, this.minCPS, this.hurtTime, this.fov, this.reach, this.throughWallReach, this.switchDelay, this.blocking, this.players, this.animals, this.mobs, this.villager, this.invis, this.died);
+        this.addValues(this.mode, this.prmode, rotationMode,this.maxCPS, this.minCPS, this.hurtTime, this.fov, this.reach, this.throughWallReach, this.switchDelay, this.blocking, this.players, this.animals, this.mobs, this.villager, this.invis, this.died);
     }
 
     private void startBlocking() {
@@ -158,7 +159,18 @@ public class KillAura extends Mod {
                 this.index = 0;
             }
             if ((curtarget = this.targets.get(this.index)) != null) {
-                float[] rot = getNewRotations(curtarget);
+                float[] rot;
+
+                switch (rotationMode.getValue()) {
+                    case "Sigma":
+                        rot = RotationUtil.getPredictedRotations(curtarget);
+                        break;
+                    case "Normal":
+                    default:
+                        rot = getNewRotations(curtarget);
+                        break;
+                }
+
                 e.setYaw(rot[0]);
                 e.setPitch(rot[1]);
                 mc.player.rotationYawHead = rot[0];

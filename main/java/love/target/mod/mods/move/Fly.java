@@ -10,6 +10,12 @@ public class Fly extends Mod {
         super("Fly",Category.MOVE);
     }
 
+    @Override
+    protected void onDisable() {
+        MoveUtils.setSpeed(0);
+        super.onDisable();
+    }
+
     @EventTarget
     public void onPre(EventPreUpdate e) {
         mc.player.motionY = mc.gameSettings.keyBindJump.isKeyDown() ? 1 : mc.gameSettings.keyBindSneak.isKeyDown() ? -1 : 0;

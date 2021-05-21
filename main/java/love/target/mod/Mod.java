@@ -18,6 +18,8 @@ public class Mod {
 
     protected static Minecraft mc = Minecraft.getMinecraft();
 
+    public double animation = 0.0f;
+
     public Mod(String name, Category category) {
         this.name = name;
         this.category = category;

@@ -97,9 +97,11 @@ public class ConfigManager {
                                         break;
                                     case TEXT_VALUE:
                                         ((TextValue) v).setValue(value);
+                                        ((TextValue) v).getTextField().setText(value);
                                         break;
                                     case COLOR_VALUE:
                                         ((ColorValue) v).setValue(Integer.parseInt(value));
+                                        ((ColorValue) v).getColorPalette().setNowRGB(Integer.parseInt(value));
                                         break;
                                 }
                                 break;

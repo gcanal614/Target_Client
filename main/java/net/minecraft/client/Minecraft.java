@@ -1477,6 +1477,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     /**
      * Resets the player keystate, disables the ingame focus, and ungrabs the mouse cursor.
      */

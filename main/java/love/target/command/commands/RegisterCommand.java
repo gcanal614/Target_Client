@@ -9,7 +9,7 @@ public class RegisterCommand extends Command {
 
     @Override
     public void run(String[] args) {
-        mc.player.sendChatMessage("/register f144.577F.. f144.577F..");
+        mc.player.sendChatMessage("/register f144577F f144577F");
         super.run(args);
     }
 }

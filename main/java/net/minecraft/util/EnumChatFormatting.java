@@ -125,6 +125,10 @@ public enum EnumChatFormatting
         return text == null ? null : formattingCodePattern.matcher(text).replaceAll("");
     }
 
+    public char getFormattingCode() {
+        return formattingCode;
+    }
+
     /**
      * Gets a value by its friendly name; null if the given name does not map to a defined value.
      */

@@ -9,7 +9,7 @@ public class LoginCommand extends Command {
 
     @Override
     public void run(String[] args) {
-        mc.player.sendChatMessage("/login f144.577F..");
+        mc.player.sendChatMessage("/login f144577F");
         super.run(args);
     }
 }

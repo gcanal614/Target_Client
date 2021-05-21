@@ -10,9 +10,7 @@ import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
 import love.target.mod.value.ValueType;
-import love.target.mod.value.values.BooleanValue;
-import love.target.mod.value.values.ModeValue;
-import love.target.mod.value.values.NumberValue;
+import love.target.mod.value.values.*;
 import love.target.render.font.FontManager;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.utils.render.RenderUtils;
@@ -131,7 +129,11 @@ public class ClickGui extends GuiScreen {
             }
             float qwe = 0.0f;
             for (Value<?> value : selectValue) {
-                if (value.getValueType() == ValueType.NUMBER_VALUE) {
+                if (value.getValueType() == ValueType.TEXT_VALUE) {
+                    qwe += 30.0f;
+                    continue;
+                }
+                if (value.getValueType() == ValueType.NUMBER_VALUE || value.getValueType() == ValueType.COLOR_VALUE) {
                     qwe += 25.0f;
                     continue;
                 }
@@ -283,6 +285,31 @@ public class ClickGui extends GuiScreen {
                         }
                         valueYT += 25.0f;
                     }
+
+                    if (v.getValueType() == ValueType.COLOR_VALUE) {
+                        ColorValue cv = (ColorValue) v;
+                        FontManager.yaHei16.drawString(cv.getName(),valueX + 5,valueYT,new Color(61, 62, 65).getRGB());
+                        cv.getColorPalette().setX(valueX + 10);
+                        cv.getColorPalette().setY(valueYT + 13);
+                        cv.getColorPalette().draw(mouseX,mouseY);
+                        cv.setValue(cv.getColorPalette().getNowRGB());
+                        RenderUtils.drawRect(valueX + 130,valueYT + 13,valueX + 150,valueYT + 23,cv.getColorPalette().getNowRGB());
+                        valueYT += 25.0f;
+                    }
+
+                    if (v.getValueType() == ValueType.TEXT_VALUE) {
+                        TextValue textValue = (TextValue) v;
+                        FontManager.yaHei16.drawString(textValue.getName(),valueX + 5,valueYT,new Color(61, 62, 65).getRGB());
+                        RenderUtils.drawBorderedRect(valueX + 10,valueYT + 12,valueX + 150,valueYT + 24,2,Wrapper.isHovered(valueX + 10,valueYT + 12,valueX + 150,valueYT + 24,mouseX,mouseY) ? new Color(0x3145D7).getRGB() : new Color(0x0000FF).getRGB(),new Color(0,0,0).getRGB());
+                        textValue.setTextFieldX((int) valueX + 12);
+                        textValue.setTextFieldY((int) valueYT + 14);
+                        textValue.setTextFieldWidth(139);
+                        textValue.setTextFieldHeight(10);
+                        textValue.getTextField().drawTextBox();
+                        textValue.getTextField().setEnableBackgroundDrawing(false);
+                        textValue.setValue(textValue.getTextField().getText());
+                        valueYT += 30.0f;
+                    }
                 }
                 RenderUtils.stopGlScissor();
             }
@@ -308,6 +335,17 @@ public class ClickGui extends GuiScreen {
         if (selectType == ClickType.HOME && this.search != null) {
             this.search.textboxKeyTyped(typedChar, keyCode);
         }
+
+        if (selectType == ClickType.HOME && selectValue != null) {
+            for (Value<?> value : selectValue) {
+                if (value.getValueType() == ValueType.TEXT_VALUE) {
+                    if (typedChar != ':') {
+                        TextValue textValue = (TextValue) value;
+                        textValue.getTextField().textboxKeyTyped(typedChar, keyCode);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -315,6 +353,15 @@ public class ClickGui extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if (selectType == ClickType.HOME && this.search != null) {
             this.search.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+
+        if (selectType == ClickType.HOME && selectValue != null) {
+            for (Value<?> value : selectValue) {
+                if (value.getValueType() == ValueType.TEXT_VALUE) {
+                    TextValue textValue = (TextValue) value;
+                    textValue.getTextField().mouseClicked(mouseX, mouseY, mouseButton);
+                }
+            }
         }
     }
 

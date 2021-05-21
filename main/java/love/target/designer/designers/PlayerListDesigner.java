@@ -1,6 +1,5 @@
 package love.target.designer.designers;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import love.target.Wrapper;
 import love.target.designer.Designer;
 import love.target.other.rightclickmenu.NormalRightClickMenu;
@@ -9,6 +8,7 @@ import love.target.other.object.PlayerListObject;
 import love.target.render.font.FontManager;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.utils.render.RenderUtils;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -91,7 +91,7 @@ public class PlayerListDesigner extends Designer {
             }
             RenderUtils.drawRect(this.x, textY + (float)this.mc.fontRenderer.FONT_HEIGHT + 3.0f, this.x + FontManager.yaHei16.getStringWidth("PlayerList") + 80, textY + (float)this.mc.fontRenderer.FONT_HEIGHT + 13.0f, new Color(30, 30, 35, 240).getRGB());
             if (player == this.no1Player) {
-                FontManager.yaHei18.drawString(ChatFormatting.YELLOW + "★", this.x + 2, this.mc.fontRenderer.FONT_HEIGHT + 1.5f + (int) textY, -1);
+                FontManager.yaHei18.drawString(EnumChatFormatting.YELLOW + "★", this.x + 2, this.mc.fontRenderer.FONT_HEIGHT + 1.5f + (int) textY, -1);
             }
             FontManager.yaHei16.drawString(player.name, (float)(this.x + (player == this.no1Player ? 12 : 3)), (float)this.mc.fontRenderer.FONT_HEIGHT + 2f + textY, -1);
             String killString;

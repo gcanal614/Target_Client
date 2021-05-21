@@ -442,6 +442,8 @@ public class ItemRenderer
         }
     }
 
+    private long circleTicks;
+
     private void doSwordBlock(float f,float f1,float partialTicks) {
         if (ModManager.getModEnableByName("BlockHitting")) {
             GL11.glTranslated(BlockHitting.translatedX.getValue(), BlockHitting.translatedY.getValue(), BlockHitting.translatedZ.getValue());
@@ -458,6 +460,24 @@ public class ItemRenderer
                     GL11.glRotatef(-var * 40.0f / 4.0f,- (float) (var / 2.0f), -0.0f, -(float) 15.0f);
                     GL11.glRotatef(-var * 30.0f, -(float) 1.0f,- (float) (var / 2.0f), -0.0f);
                     GlStateManager.rotate(-15, 1.0F, 0.0F, -0.0F);
+                    this.doBlockTransformations();
+                    break;
+                case "Slide":
+                    this.transformFirstPersonItem(f, 0.0f);
+                    this.doBlockTransformations();
+                    GL11.glTranslated(-0.3, 0.3, 0.0);
+                    GL11.glRotatef(-var * 70.0f / 2.0f, -8.0f, 0.0f, 9.0f);
+                    GL11.glRotatef(-var * 70.0f, 1.0f, -0.4f, -0.0f);
+                    break;
+                case "Circle":
+                    circleTicks += 1;
+                    GlStateManager.translate(-0.0F, -0.2F, -0.6F);
+                    GlStateManager.rotate(-circleTicks * 0.07f * 50, 0, 0, -1.0f);
+                    GlStateManager.rotate(44, 0, 1, 0.6f);
+                    GlStateManager.rotate(44, 1, 0, -0.6f);
+                    GlStateManager.translate(1.0F, -0.2F, 0.5F);
+                    GlStateManager.rotate(-44, 1, 0, -0.6f);
+                    GlStateManager.scale(0.5, 0.5, 0.5);
                     this.doBlockTransformations();
                     break;
                 case "Vanilla":

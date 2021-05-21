@@ -8,6 +8,10 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+/**
+ * @see net.minecraft.client.entity.EntityPlayerSP -> onLivingUpdate()
+ */
+
 public class NoSlow extends Mod {
     private final ModeValue mode = new ModeValue("Mode","Vanilla",new String[]{"Vanilla","Watchdog"});
 

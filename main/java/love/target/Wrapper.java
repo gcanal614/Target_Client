@@ -1,30 +1,37 @@
 package love.target;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import com.utils.logger.Logger;
 import com.utils.logger.LoggerCreator;
 import love.target.command.CommandManager;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
-import love.target.events.EventPreUpdate;
+import love.target.mod.Mod;
 import love.target.mod.ModManager;
+import love.target.other.object.Link;
 import love.target.render.font.FontManager;
 import love.target.render.screen.altlogin.AltFileSaver;
 import love.target.utils.LaunchUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.Display;
 
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Wrapper {
     public static final Minecraft mc = Minecraft.getMinecraft();
     private static final Logger<Object> logger = LoggerCreator.getLoggerObject(Wrapper.class);
     private static final String CLIENT_NAME = "Target";
-    private static final String CLIENT_VERSION = "Beta -> 210519 #0";
+    private static final String CLIENT_VERSION = "Beta -> 210521 #0";
     private static final String CLIENT_FILE_PATH = Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/target/";
     private static final Config NORMAL_CONFIG = new Config("",true);
     private static final Wrapper Instance = new Wrapper();
+    private static final List<Link> links = new CopyOnWriteArrayList<>();
 
     private static long runTicks;
 
@@ -33,10 +40,11 @@ public class Wrapper {
      * @see Minecraft
      */
     public void onStartGame() {
+        links.add(new Link(new ResourceLocation("textures/gui/icons/github.png"),"GitHub","https://github.com/yaskylan/Target_Client"));
         initializationManagers();
         ConfigManager.loadConfig(NORMAL_CONFIG);
         AltFileSaver.readAlts();
-
+        Display.setTitle("Minecraft 1.8.9 -> Target " + getClientVersion());
         getLogger().info("Client的版本为" + getClientVersion());
         getLogger().warn("本次启动浪费了" + (LaunchUtils.getLaunchTime() / 1000L) + "秒的人生");
     }
@@ -70,7 +78,7 @@ public class Wrapper {
     }
 
     public static void sendMessage(Object message) {
-        mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(ChatFormatting.WHITE + "[" + ChatFormatting.YELLOW + getClientName() + ChatFormatting.WHITE + "] " + ChatFormatting.GRAY + message));
+        mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "[" + EnumChatFormatting.YELLOW + getClientName() + EnumChatFormatting.WHITE + "] " + EnumChatFormatting.GRAY + message));
     }
 
     public static void sendMessageNoClientName(Object message) {
@@ -92,6 +100,10 @@ public class Wrapper {
         }
 
         return sb.toString();
+    }
+
+    public static double randomDouble(double min, double max) {
+        return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
     public static int speedBsInteger(Entity entity) {
@@ -133,5 +145,9 @@ public class Wrapper {
 
     public static Logger<Object> getLogger() {
         return logger;
+    }
+
+    public static List<Link> getLinks() {
+        return links;
     }
 }

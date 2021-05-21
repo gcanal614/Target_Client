@@ -1,6 +1,5 @@
 package love.target.mod.mods.world;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import love.target.eventapi.EventTarget;
 import love.target.eventapi.types.Priority;
 import love.target.events.Event2D;
@@ -23,10 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Arrays;
@@ -80,9 +76,9 @@ public class Scaffold extends Mod {
         int middleY = height / 2 - 12;
         int block = this.getBlockCount() + this.getallBlockCount();
         if (block != 0) {
-            FontManager.yaHei16.drawStringWithShadow((block >= 64 ? ChatFormatting.YELLOW : ChatFormatting.RED) + "Blocks:" + block + ChatFormatting.WHITE + " (" + ChatFormatting.GRAY + this.currentblock.getDisplayName() + ChatFormatting.WHITE + ")", middleX - 50, middleY + 20, 0, 255);
+            FontManager.yaHei16.drawStringWithShadow((block >= 64 ? EnumChatFormatting.YELLOW : EnumChatFormatting.RED) + "Blocks:" + block + EnumChatFormatting.WHITE + " (" + EnumChatFormatting.GRAY + this.currentblock.getDisplayName() + EnumChatFormatting.WHITE + ")", middleX - 50, middleY + 20, 0, 255);
         } else {
-            FontManager.yaHei16.drawStringWithShadow((block >= 64 ? ChatFormatting.YELLOW : ChatFormatting.RED) + "Blocks:" + block + ChatFormatting.WHITE + " (" + ChatFormatting.GRAY + "No hava LOL" + ChatFormatting.WHITE + ")", middleX - 50, middleY + 20, 0, 255);
+            FontManager.yaHei16.drawStringWithShadow((block >= 64 ? EnumChatFormatting.YELLOW : EnumChatFormatting.RED) + "Blocks:" + block + EnumChatFormatting.WHITE + " (" + EnumChatFormatting.GRAY + "No hava LOL" + EnumChatFormatting.WHITE + ")", middleX - 50, middleY + 20, 0, 255);
         }
     }
 

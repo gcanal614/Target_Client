@@ -25,7 +25,6 @@ public class AltFileSaver {
                 String account = str.split(":")[0];
                 String password = str.split(":")[1];
                 String userName = str.split(":")[2];
-
                 GuiAltManager.getAlts().add(new Alt(account,password,userName));
             }
         } catch (Exception e) {

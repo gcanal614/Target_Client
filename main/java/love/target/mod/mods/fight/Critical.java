@@ -1,6 +1,5 @@
 package love.target.mod.mods.fight;
 
-import love.target.Wrapper;
 import love.target.eventapi.EventTarget;
 import love.target.events.EventPacket;
 import love.target.events.EventPreUpdate;

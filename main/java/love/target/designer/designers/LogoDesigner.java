@@ -1,12 +1,13 @@
 package love.target.designer.designers;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import love.target.Wrapper;
 import love.target.designer.Designer;
+import love.target.mod.mods.visual.HUD;
 import love.target.other.rightclickmenu.NormalRightClickMenu;
 import love.target.other.rightclickmenu.RightClickMenu;
 import love.target.render.font.FontManager;
 import love.target.utils.render.RenderUtils;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -30,7 +31,7 @@ public class LogoDesigner extends Designer {
             RenderUtils.drawBorderedRect(this.x - 2, this.y, x + FontManager.yaHei20.getStringWidth("Target") + 2,y + FontManager.yaHei20.FONT_HEIGHT + 1, 1.0f, new Color(0, 0, 255).getRGB(), new Color(0, 0, 0, 0).getRGB());
             FontManager.yaHei16.drawString("Logo X:" + this.x + " Y:" + this.y, this.x - 2, this.y - 13, -1);
         }
-        FontManager.yaHei20.drawStringWithShadow(ChatFormatting.YELLOW + "Target", x,y, -1);
+        FontManager.yaHei20.drawStringWithShadow(EnumChatFormatting.YELLOW + HUD.clientNameRender, x,y, -1);
     }
 
     @Override

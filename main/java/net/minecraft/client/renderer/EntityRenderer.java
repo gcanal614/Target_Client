@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 
 import love.target.eventapi.EventManager;
 import love.target.events.Event3D;
+import love.target.mod.ModManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -795,7 +796,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                         if (d7 < d3)
                         {
-                            d3 = d7;
+                            if (!ModManager.getModEnableByName("CamaraNoClip")) {
+                                d3 = d7;
+                            }
                         }
                     }
                 }

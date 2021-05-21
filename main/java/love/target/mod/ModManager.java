@@ -7,6 +7,7 @@ import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.Teams;
+import love.target.mod.mods.other.TestMod;
 import love.target.mod.mods.player.AntiVoid;
 import love.target.mod.mods.player.ChatBypass;
 import love.target.mod.mods.player.NoFall;
@@ -31,7 +32,7 @@ public class ModManager {
         /* FIGHT */
         registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip());
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
         /* PLAYER */
@@ -39,7 +40,7 @@ public class ModManager {
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor());
         /* OTHER */
-        registerMods(new Teams());
+        registerMods(new Teams(),new TestMod());
         /* WORLD */
         registerMods(new Scaffold());
 

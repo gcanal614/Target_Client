@@ -28,7 +28,7 @@ public class InventoryManager extends Mod {
     private final NumberValue blockCap = new NumberValue("BlockCap", 128, 0, 256, 1);
     private final NumberValue delay = new NumberValue("Delay", 1, 0, 10, 1);
     private final BooleanValue food = new BooleanValue("Food", false);
-    private final BooleanValue sort = new BooleanValue("sort", true);
+    private final BooleanValue sort = new BooleanValue("Sort", true);
     private final BooleanValue archery = new BooleanValue("Archery", true);
     private final BooleanValue sword = new BooleanValue("Sword", true);
     private final BooleanValue uhcMode = new BooleanValue("UHC", false);

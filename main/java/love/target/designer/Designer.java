@@ -75,6 +75,7 @@ public abstract class Designer {
         ARRAY_LIST,
         PLAYER_LIST,
         SPEED_LIST,
+        INVENTORY_HUD,
         NULL;
 
         public static DesignerType toDesignerTypeByString(String s) {

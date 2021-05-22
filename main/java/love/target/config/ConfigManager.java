@@ -4,10 +4,7 @@ import com.utils.ObjectUtils;
 import com.utils.file.FileUtils;
 import love.target.Wrapper;
 import love.target.designer.Designer;
-import love.target.designer.designers.ArrayListDesigner;
-import love.target.designer.designers.LogoDesigner;
-import love.target.designer.designers.PlayerListDesigner;
-import love.target.designer.designers.SpeedListDesigner;
+import love.target.designer.designers.*;
 import love.target.eventapi.EventManager;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
@@ -143,6 +140,9 @@ public class ConfigManager {
                         break;
                     case SPEED_LIST:
                         GuiDesigner.addDesigner(new SpeedListDesigner(designerX,designerY));
+                        break;
+                    case INVENTORY_HUD:
+                        GuiDesigner.addDesigner(new InventoryHUDDesigner(designerX,designerY));
                         break;
                 }
             }

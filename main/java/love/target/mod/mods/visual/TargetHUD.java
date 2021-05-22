@@ -61,7 +61,7 @@ public class TargetHUD extends Mod {
             FontManager.yaHei16.drawString(targetEntity.getName(),x + 28,y,-1);
             RenderUtils.drawRect(x + 28,y + 12,x + 128,y + 25.5,new Color(70,70,70).getRGB());
             RenderUtils.drawRect(x + 28,y + 12,x + 28 + nowHealth,y + 25.5,healthColor);
-            FontManager.yaHei16.drawCenteredString("HP:" + (int) targetEntity.getHealth(),x + 70,y + 12,-1);
+            FontManager.yaHei16.drawCenteredString("HP:" + (int) targetEntity.getHealth() + " / " + (int) targetEntity.getMaxHealth(),x + 72.5f,y + 12,-1);
             lastEntity = targetEntity;
         }
     }

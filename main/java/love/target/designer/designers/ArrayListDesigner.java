@@ -12,6 +12,7 @@ import love.target.mod.ModManager;
 import love.target.render.font.FontManager;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.utils.render.RenderUtils;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -36,27 +37,13 @@ public class ArrayListDesigner extends Designer {
     @Override
     public void draw() {
         if (ObjectUtils.reverse(mc.currentScreen instanceof GuiDesigner)) {
-            List<Mod> sort = ModManager.getMods();
 
-            /*
-            for (Mod m : ModManager.getMods()) {
-                if (m.isEnabled()) {
-                    if (m.animation < FontManager.yaHei16.getStringWidth(m.getName())) {
-                        m.animation += 0.1;
-                    }
-                } else {
-                    if (m.animation > -1.0) {
-                        m.animation -= 0.1;
-                    }
-                }
+            List<Mod> sort = new CopyOnWriteArrayList<>(ModManager.getMods());
 
-                if (m.animation <= -1.0) continue;
-
-                sort.add(m);
+            if (HUD.arrayListSort.getValue()) {
+                sort.sort((o1, o2) -> FontManager.yaHei16.getStringWidth(o2.getName()) - FontManager.yaHei16.getStringWidth(o1.getName()));
             }
-            */
 
-            sort.sort((o1, o2) -> FontManager.yaHei16.getStringWidth(o2.getName()) - FontManager.yaHei16.getStringWidth(o1.getName()));
             float textY = this.y;
             int rainbowTick = 0;
             int fadeTicks = 1;
@@ -80,8 +67,16 @@ public class ArrayListDesigner extends Designer {
                         break;
                 }
 
-                FontManager.yaHei16.drawStringWithShadow(m.getName(), (float)(x - FontManager.yaHei16.getStringWidth(m.getName()) - 1), textY, color);
-                textY += 10.0f;
+                float renderX = Math.min(x, new ScaledResolution(mc).getScaledWidth());
+                float fontWidth = HUD.arrayListEdge.isCurrentValue("Right") ? FontManager.yaHei16.getStringWidth(m.getName()) : HUD.arrayListEdge.isCurrentValue("Left") ? FontManager.yaHei16.getStringWidth(sort.get(0).getName()) :  FontManager.yaHei16.getStringWidth(m.getName());
+                FontManager.yaHei16.drawStringWithShadow(m.getName(), (float)(renderX - fontWidth - 1), textY, color);
+                if (HUD.arrayListYWay.isCurrentValue("Down")) {
+                    textY += 10.0f;
+                } else if (HUD.arrayListYWay.isCurrentValue("Up")) {
+                    textY -= 10.0f;
+                } else {
+                    textY += 10.0f;
+                }
                 fadeTicks++;
                 rainbowTick += 200;
             }

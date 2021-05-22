@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Scaffold extends Mod {
-    private final NumberValue towerBoostValue = new NumberValue("TowerBoost",1.0f,1.0f,5.0f,0.1f);
+    private final NumberValue towerBoostValue = new NumberValue("TowerBoost",1.0,1.0,5.0,0.1);
     private final BooleanValue tower = new BooleanValue("Tower", true);
     private final BooleanValue swing = new BooleanValue("Swing", false);
     private final BooleanValue movetower = new BooleanValue("MoveTower", true);

@@ -9,14 +9,8 @@ import love.target.mod.mods.item.AutoArmor;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.item.InventoryManager;
 import love.target.mod.mods.move.*;
-import love.target.mod.mods.other.PingSpoof;
-import love.target.mod.mods.other.Teams;
-import love.target.mod.mods.other.TestMod;
-import love.target.mod.mods.other.Timer;
-import love.target.mod.mods.player.AntiVoid;
-import love.target.mod.mods.player.ChatBypass;
-import love.target.mod.mods.player.NoFall;
-import love.target.mod.mods.player.Terminator;
+import love.target.mod.mods.other.*;
+import love.target.mod.mods.player.*;
 import love.target.mod.mods.visual.*;
 import love.target.mod.mods.world.Scaffold;
 import love.target.render.screen.clickgui.ClickGui;
@@ -37,15 +31,15 @@ public class ModManager {
         /* FIGHT */
         registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical(),new Clicker(),new HitBox(),new Reach(),new AutoAim());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD());
         /* MOVE */
         registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint());
         /* PLAYER */
-        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass());
+        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace());
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager());
         /* OTHER */
-        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof());
+        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug());
         /* WORLD */
         registerMods(new Scaffold());
 

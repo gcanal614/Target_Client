@@ -1,9 +1,6 @@
 package love.target.render.screen.designer.menu.menus;
 
-import love.target.designer.designers.ArrayListDesigner;
-import love.target.designer.designers.LogoDesigner;
-import love.target.designer.designers.PlayerListDesigner;
-import love.target.designer.designers.SpeedListDesigner;
+import love.target.designer.designers.*;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.render.screen.designer.menu.DesignerMenu;
 
@@ -14,5 +11,6 @@ public class DesignerMainMenu extends DesignerMenu {
         addButton(new DesignerMenuButton("Create ArrayList",() -> GuiDesigner.addDesigner(new ArrayListDesigner())));
         addButton(new DesignerMenuButton("Create PlayerList",() -> GuiDesigner.addDesigner(new PlayerListDesigner())));
         addButton(new DesignerMenuButton("Create SpeedList",() -> GuiDesigner.addDesigner(new SpeedListDesigner())));
+        addButton(new DesignerMenuButton("Create InventoryHUD",() -> GuiDesigner.addDesigner(new InventoryHUDDesigner())));
     }
 }

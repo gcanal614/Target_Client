@@ -6,6 +6,7 @@ import love.target.designer.Designer;
 import love.target.eventapi.EventTarget;
 import love.target.events.Event2D;
 import love.target.mod.Mod;
+import love.target.mod.value.values.BooleanValue;
 import love.target.mod.value.values.ColorValue;
 import love.target.mod.value.values.ModeValue;
 import love.target.mod.value.values.TextValue;
@@ -16,17 +17,20 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
-//KillAura_LIST_Target Filter:{Animals:true,Mobs:true,Teams:false,Players:true}
+
 public class HUD extends Mod {
     private final TextValue clientName = new TextValue("ClientName","Target");
     public static final ModeValue arrayListColorMode = new ModeValue("ArrayListColor","White",new String[]{"White","Custom","Rainbow","Fade"});
+    public static final ModeValue arrayListEdge = new ModeValue("ArrayListEdge","Right",new String[]{"Right","Left"});
+    public static final ModeValue arrayListYWay = new ModeValue("ArrayListWay","Down",new String[]{"Down","Up"});
     public static final ColorValue arrayListCustomColor = new ColorValue("ArrayListCustomColor",-1);
+    public static final BooleanValue arrayListSort = new BooleanValue("ArrayListSort",true);
 
     public static String clientNameRender;
 
     public HUD() {
         super("HUD", Category.VISUAL);
-        addValues(arrayListColorMode,clientName,arrayListCustomColor);
+        addValues(arrayListColorMode,arrayListEdge,arrayListYWay,clientName,arrayListCustomColor,arrayListSort);
     }
 
     @EventTarget
@@ -45,7 +49,7 @@ public class HUD extends Mod {
 
         if (!mc.gameSettings.showDebugInfo) {
             for (Designer designer : GuiDesigner.designers) {
-                if (designer.getDesignerType() != Designer.DesignerType.PLAYER_LIST && designer.getDesignerType() != Designer.DesignerType.SPEED_LIST) {
+                if (designer.getDesignerType() != Designer.DesignerType.PLAYER_LIST && designer.getDesignerType() != Designer.DesignerType.SPEED_LIST && designer.getDesignerType() != Designer.DesignerType.INVENTORY_HUD) {
                     designer.draw();
                 }
             }

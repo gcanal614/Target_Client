@@ -1,11 +1,15 @@
 package love.target.mod;
 
 import com.utils.ObjectUtils;
+import love.target.Wrapper;
 import love.target.command.CommandManager;
 import love.target.command.commands.ModValueSetCommand;
 import love.target.mod.mods.fight.*;
+import love.target.mod.mods.item.AutoArmor;
 import love.target.mod.mods.item.ChestStealer;
+import love.target.mod.mods.item.InventoryManager;
 import love.target.mod.mods.move.*;
+import love.target.mod.mods.other.PingSpoof;
 import love.target.mod.mods.other.Teams;
 import love.target.mod.mods.other.TestMod;
 import love.target.mod.mods.other.Timer;
@@ -31,17 +35,17 @@ public class ModManager {
      */
     public static void init() {
         /* FIGHT */
-        registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical());
+        registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical(),new Clicker(),new HitBox(),new Reach(),new AutoAim());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP());
         /* MOVE */
-        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly());
+        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint());
         /* PLAYER */
         registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass());
         /* ITEM */
-        registerMods(new ChestStealer(),new AutoArmor());
+        registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager());
         /* OTHER */
-        registerMods(new Teams(),new TestMod(),new Timer());
+        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof());
         /* WORLD */
         registerMods(new Scaffold());
 
@@ -96,6 +100,7 @@ public class ModManager {
         Mod m = getModByName(modName);
 
         if (ObjectUtils.isNull(m)) {
+            Wrapper.getLogger().error(modName + " not found");
             return false;
         } else {
             return m.isEnabled();
@@ -115,6 +120,7 @@ public class ModManager {
             }
         }
 
+        Wrapper.getLogger().error(modName + " not found");
         return null;
     }
 

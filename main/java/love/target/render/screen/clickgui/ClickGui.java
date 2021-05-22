@@ -1,11 +1,14 @@
 package love.target.render.screen.clickgui;
 
-import java.awt.Color;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import love.target.Wrapper;
+import love.target.config.Config;
+import love.target.config.ConfigManager;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
@@ -14,8 +17,11 @@ import love.target.mod.value.values.*;
 import love.target.render.font.FontManager;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.utils.render.RenderUtils;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -35,12 +41,14 @@ public class ClickGui extends GuiScreen {
     static ClickType selectType = ClickType.HOME;
     static Mod.Category selectCategory = Mod.Category.FIGHT;
     static List<Value<?>> selectValue = new CopyOnWriteArrayList<>();
+    static Config selectConfig;
     static float modStart = 0.0f;
     static float valueStart = 0.0f;
     int whell = 0;
     int valueWhell = 0;
     static boolean modEnableDown = false;
     static boolean valueEnableDown = false;
+    static boolean configButtonDown = false;
 
     @Override
     public void initGui() {
@@ -316,6 +324,123 @@ public class ClickGui extends GuiScreen {
         } else if (selectType == ClickType.DESIGNER) {
             mc.displayGuiScreen(new GuiDesigner());
             selectType = ClickType.HOME;
+        } else if (selectType == ClickType.CONFIG) {
+            RenderUtils.drawRect(windowX + 5,windowY + height - 5,windowX + 15,windowY + height - 15,new Color(241, 0, 255).getRGB());
+            FontManager.yaHei24.drawCenteredString("+", windowX + 5 + 9 / 2.0f, windowY + height - 19, new Color(255, 255, 255, 255).getRGB());
+            if (Wrapper.isHovered(windowX + 5,windowY + height - 15,windowX + 15,windowY + height - 5,mouseX,mouseY)) {
+                RenderUtils.drawRect(windowX + 5,windowY + height - 5,windowX + 15,windowY + height - 15,new Color(0,0,0, 50).getRGB());
+                if (Mouse.isButtonDown(0) && !configButtonDown) {
+                    mc.displayGuiScreen(new GuiScreen() {
+                        private GuiTextField textField;
+
+                        @Override
+                        protected void actionPerformed(GuiButton button) throws IOException {
+                            super.actionPerformed(button);
+                            switch (button.id) {
+                                case 0: {
+                                    try {
+                                        if (!this.textField.getText().isEmpty()) {
+                                            ConfigManager.saveConfig(new Config(this.textField.getText()));
+                                            this.mc.displayGuiScreen(new ClickGui());
+                                        }
+                                    }
+                                    catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                case 1: {
+                                    this.mc.displayGuiScreen(new ClickGui());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void initGui() {
+                            super.initGui();
+                            this.textField = new GuiTextField(114514, this.mc.fontRenderer, width / 2 - 100, height / 2 - 20, 200, 20);
+                            this.buttonList.add(new GuiButton(0, width / 2 - 100, height / 2 + 20, 200, 20, "Add"));
+                            this.buttonList.add(new GuiButton(1, width / 2 - 100, height / 2 + 60, 200, 20, "Cancel"));
+                        }
+
+                        @Override
+                        public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+                            RenderUtils.drawRect(0.0, 0.0, width, height, new Color(0, 0, 0, 130).getRGB());
+                            super.drawScreen(mouseX, mouseY, partialTicks);
+                            this.mc.fontRenderer.drawCenteredStringWithShadow("Add Config", (float)width / 2.0f, (float)height / 2.0f - 60.0f, -1);
+                            this.textField.drawTextBox();
+                            this.textField.setMaxStringLength(60);
+                        }
+
+                        @Override
+                        protected void keyTyped(char typedChar, int keyCode) throws IOException {
+                            super.keyTyped(typedChar, keyCode);
+                            this.textField.textboxKeyTyped(typedChar, keyCode);
+                        }
+
+                        @Override
+                        protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+                            super.mouseClicked(mouseX, mouseY, mouseButton);
+                            this.textField.mouseClicked(mouseX, mouseY, mouseButton);
+                        }
+                    });
+                    configButtonDown = true;
+                }
+            }
+
+            RenderUtils.drawRect(windowX + 5,windowY + 25,windowX + 85,windowY + height - 20,new Color(57, 66, 66).getRGB());
+            float configY = windowY + 25;
+            for (Config config : ConfigManager.getConfigs()) {
+                FontManager.yaHei20.drawString(config.getName(),windowX + 8,configY,-1);
+                if (Wrapper.isHovered(windowX + 5,configY,windowX + 85,configY + 15,mouseX,mouseY)) {
+                    RenderUtils.drawRect(windowX + 5,configY,windowX + 85,configY + 15,new Color(0,0,0,50).getRGB());
+
+                    if (Mouse.isButtonDown(1)) {
+                        selectConfig = config;
+                    }
+                }
+                configY += 16;
+            }
+
+            if (selectConfig != null) {
+                RenderUtils.drawRect(windowX + 89,windowY + 25,windowX + width - 5,windowY + height - 20,new Color(57, 66, 66).getRGB());
+                FontManager.yaHei24.drawString(selectConfig.getName(),windowX + 92,windowY + 25,new Color(0x00FFFF).getRGB());
+                RenderUtils.drawRect(windowX + 91,windowY + height - 35,windowX + 131,windowY + height - 22,new Color(0x4BB84B).getRGB());
+                FontManager.yaHei16.drawString("加载",windowX + 103,windowY + height - 34,-1);
+                RenderUtils.drawRect(windowX + 133,windowY + height - 35,windowX + 173,windowY + height - 22,new Color(0xB84B4B).getRGB());
+                FontManager.yaHei16.drawString("删除",windowX + 145,windowY + height - 34,-1);
+                RenderUtils.drawRect(windowX + 175,windowY + height - 35,windowX + 215,windowY + height - 22,new Color(0x4B73B8).getRGB());
+                FontManager.yaHei16.drawString("更新",windowX + 187,windowY + height - 34,-1);
+                if (Wrapper.isHovered(windowX + 91,windowY + height - 35,windowX + 131,windowY + height - 22,mouseX,mouseY)) {
+                    RenderUtils.drawRect(windowX + 91,windowY + height - 35,windowX + 131,windowY + height - 22,new Color(0,0,0,50).getRGB());
+                    if (Mouse.isButtonDown(0) && !configButtonDown) {
+                        ConfigManager.loadConfig(selectConfig);
+                        configButtonDown = true;
+                    }
+                }
+
+                if (Wrapper.isHovered(windowX + 133,windowY + height - 35,windowX + 173,windowY + height - 22,mouseX,mouseY)) {
+                    RenderUtils.drawRect(windowX + 133,windowY + height - 35,windowX + 173,windowY + height - 22,new Color(0,0,0,50).getRGB());
+                    if (Mouse.isButtonDown(0) && !configButtonDown) {
+                        ConfigManager.removeConfig(selectConfig);
+                        selectConfig = null;
+                        configButtonDown = true;
+                    }
+                }
+
+                if (Wrapper.isHovered(windowX + 175,windowY + height - 35,windowX + 215,windowY + height - 22,mouseX,mouseY)) {
+                    RenderUtils.drawRect(windowX + 175,windowY + height - 35,windowX + 215,windowY + height - 22,new Color(0,0,0,50).getRGB());
+                    if (Mouse.isButtonDown(0) && !configButtonDown) {
+                        ConfigManager.removeConfig(selectConfig);
+                        ConfigManager.saveConfig(new Config(selectConfig.getName()));
+                        selectConfig = null;
+                        configButtonDown = true;
+                    }
+                }
+            }
+
+            if (!Mouse.isButtonDown(0)) {
+                configButtonDown = false;
+            }
         }
 
         //this.drawCursor(mouseX,mouseY);

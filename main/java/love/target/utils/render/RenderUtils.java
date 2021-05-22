@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -46,6 +47,71 @@ public class RenderUtils {
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         RenderUtils.resetColor();
+    }
+
+    public static void drawBoundingBox(AxisAlignedBB aa) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        tessellator.draw();
     }
 
     public static double getAnimationState(double animation, double finalState, double speed) {
@@ -258,6 +324,29 @@ public class RenderUtils {
         GL11.glDisable(2848);
         GL11.glDisable(3042);
         GL11.glEnable(2929);
+    }
+
+    public static void pre3D() {
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDepthMask(false);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+    }
+
+    public static void post3D() {
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+        GL11.glColor4f(1, 1, 1, 1);
     }
 
     public static double getEntityRenderX(Entity entity) {

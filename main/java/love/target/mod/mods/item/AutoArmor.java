@@ -1,4 +1,4 @@
-package love.target.mod.mods.fight;
+package love.target.mod.mods.item;
 
 import love.target.eventapi.EventTarget;
 import love.target.events.EventTick;

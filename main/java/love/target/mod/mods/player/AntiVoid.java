@@ -87,7 +87,7 @@ public class AntiVoid extends Mod {
         mc.player.motionZ = posAndMotion.motionZ;
     }
 
-    private boolean isOverVoid() {
+    public static boolean isOverVoid() {
         boolean isOverVoid = true;
         BlockPos block = new BlockPos(mc.player.posX, mc.player.posY - 1, mc.player.posZ);
         for (double i = mc.player.posY + 1; i > 0; i -= 0.5) {

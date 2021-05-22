@@ -149,4 +149,8 @@ public class Wrapper {
     public static List<Link> getLinks() {
         return links;
     }
+
+    public static Config getNormalConfig() {
+        return NORMAL_CONFIG;
+    }
 }

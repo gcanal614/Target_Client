@@ -24,4 +24,6 @@ public class Config {
     public String getDir() {
         return dir;
     }
+
+
 }

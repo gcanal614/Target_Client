@@ -1,5 +1,6 @@
 package love.target.config;
 
+import com.utils.ObjectUtils;
 import com.utils.file.FileUtils;
 import love.target.Wrapper;
 import love.target.designer.Designer;
@@ -7,6 +8,7 @@ import love.target.designer.designers.ArrayListDesigner;
 import love.target.designer.designers.LogoDesigner;
 import love.target.designer.designers.PlayerListDesigner;
 import love.target.designer.designers.SpeedListDesigner;
+import love.target.eventapi.EventManager;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
@@ -54,12 +56,22 @@ public class ConfigManager {
         FileUtils.writeStringTo(modBuilder.toString(),path,"mod_enable_bind.txt");
         FileUtils.writeStringTo(valueBuilder.toString(),path,"value.txt");
         FileUtils.writeStringTo(designerBuilder.toString(),path,"designer.txt");
+
+        if (configIn != Wrapper.getNormalConfig()) {
+            addConfigs(configIn);
+            FileUtils.writeInputStreamTo(ObjectUtils.getResource("target_resources/image/config_head.png"),path + "config_head.jpg");
+        }
     }
 
     public static void loadConfig(Config configIn) {
         String path = Wrapper.getClientFilePath() + configIn.getDir();
 
         try {
+            if (configIn != Wrapper.getNormalConfig()) {
+                for (Mod mod : ModManager.getMods()) {
+                    mod.setEnabled(false);
+                }
+            }
             for (String s : FileUtils.readLine(new FileInputStream(path + "mod_enable_bind.txt"))) {
                 String modName = s.split(":")[0];
                 boolean modEnable = Boolean.parseBoolean(s.split(":")[1]);
@@ -111,6 +123,9 @@ public class ConfigManager {
                 }
             }
 
+            if (configIn != Wrapper.getNormalConfig()) {
+                GuiDesigner.designers.clear();
+            }
             for (String s : FileUtils.readLine(new FileInputStream(path + "designer.txt"))) {
                 Designer.DesignerType designerType = Designer.DesignerType.toDesignerTypeByString(s.split(":")[0]);
                 int designerX = Integer.parseInt(s.split(":")[1]);

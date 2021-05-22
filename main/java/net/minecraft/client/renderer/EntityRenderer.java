@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 import love.target.eventapi.EventManager;
 import love.target.events.Event3D;
 import love.target.mod.ModManager;
+import love.target.mod.mods.fight.Reach;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -493,6 +494,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 d1 = this.mc.objectMouseOver.hitVec.distanceTo(vec3);
             }
 
+            if (ModManager.getModEnableByName("Reach")) {
+                d1 = Reach.getReachValue();
+                MovingObjectPosition vec3d1 = entity.rayTrace(d1, partialTicks);
+                if (vec3d1 != null) {
+                    d1 = vec3d1.hitVec.distanceTo(vec3);
+                }
+            } 
+
             Vec3 vec31 = entity.getLook(partialTicks);
             Vec3 vec32 = vec3.addVector(vec31.xCoord * d0, vec31.yCoord * d0, vec31.zCoord * d0);
             this.pointedEntity = null;
@@ -554,7 +563,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
             }
 
-            if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) > 3.0D)
+            if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) > (ModManager.getModEnableByName("Reach") ? Reach.getReachValue() : 3.0D))
             {
                 this.pointedEntity = null;
                 this.mc.objectMouseOver = new MovingObjectPosition(MovingObjectPosition.MovingObjectType.MISS, vec33, (EnumFacing)null, new BlockPos(vec33));

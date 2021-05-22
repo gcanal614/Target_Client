@@ -19,7 +19,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 /** SKID MOD
- * OMG I SO MUCH LOVE SKID :)
+ * OMG I LOVE SKID :)
  * @author Viro client
  */
 

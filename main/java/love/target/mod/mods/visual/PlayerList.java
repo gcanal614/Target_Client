@@ -8,8 +8,7 @@ import love.target.events.EventChatPrint;
 import love.target.events.EventTitle;
 import love.target.mod.Mod;
 import love.target.render.screen.designer.GuiDesigner;
-//died title §r§c§l
-//win title
+
 public class PlayerList extends Mod {
     public PlayerList() {
         super("PlayerList",Category.VISUAL);
@@ -35,7 +34,7 @@ public class PlayerList extends Mod {
 
     @EventTarget
     public void onTitle(EventTitle e) {
-        if (e.getMessage().startsWith("§r§c§l")) {
+        if (e.getMessage().startsWith("§r§c§l") || e.getMessage().startsWith("§r§6§l")) {
             for (Designer designer : GuiDesigner.designers) {
                 if (designer.getDesignerType() == Designer.DesignerType.PLAYER_LIST) {
                     ((PlayerListDesigner) designer).clearPlayers();

@@ -7,6 +7,7 @@ import love.target.events.EventMove;
 import love.target.events.EventPostUpdate;
 import love.target.events.EventPreUpdate;
 import love.target.mod.ModManager;
+import love.target.mod.mods.move.NoSlow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -35,6 +36,8 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -837,7 +840,17 @@ public class EntityPlayerSP extends AbstractClientPlayer
         boolean flag2 = this.movementInput.moveForward >= f;
         this.movementInput.updatePlayerMoveState();
 
-        if (this.isUsingItem() && !this.isRiding() && !ModManager.getModEnableByName("NoSlow"))
+        boolean cantNoSlow = !ModManager.getModEnableByName("NoSlow");
+
+        if (ModManager.getModEnableByName("NoSlow") && NoSlow.mode.isCurrentValue("AAC")) {
+            if (getHeldItem().getItem() instanceof ItemFood) {
+                cantNoSlow = true;
+            } else if (getHeldItem().getItem() instanceof ItemBow) {
+                cantNoSlow = true;
+            }
+        }
+
+        if (this.isUsingItem() && !this.isRiding() && cantNoSlow)
         {
             this.movementInput.moveStrafe *= 0.2F;
             this.movementInput.moveForward *= 0.2F;

@@ -10,6 +10,7 @@ public class TextValue extends Value<String> {
 
     public TextValue(String name,String value) {
         super(value, name, ValueType.TEXT_VALUE);
+        textField.setText(getValue());
     }
 
     public GuiTextField getTextField() {

@@ -2,11 +2,19 @@ package net.minecraft.block;
 
 import java.util.List;
 import java.util.Random;
+
+import com.google.common.eventbus.EventBus;
+import love.target.eventapi.EventManager;
+import love.target.events.EventCollideWithBlock;
+import love.target.events.EventMove;
+import love.target.mod.ModManager;
+import love.target.utils.BlockUtils;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -490,6 +498,13 @@ public class Block
     {
         AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
 
+        if (collidingEntity == Minecraft.getMinecraft().player) {
+            EventCollideWithBlock e = new EventCollideWithBlock(this,pos,axisalignedbb,state,list);
+            EventManager.call(e);
+
+            axisalignedbb = e.getBoundingBox();
+        }
+
         if (axisalignedbb != null && mask.intersectsWith(axisalignedbb))
         {
             list.add(axisalignedbb);
@@ -519,7 +534,8 @@ public class Block
      */
     public boolean isCollidable()
     {
-        return true;
+        boolean var = BlockUtils.getBlockID(this) == 54 || BlockUtils.getBlockID(this) == 130 || BlockUtils.getBlockID(this) == 146;
+        return !ModManager.getModEnableByName("GhostHand") || var;
     }
 
     /**

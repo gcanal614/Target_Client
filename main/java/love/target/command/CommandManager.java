@@ -16,7 +16,8 @@ public class CommandManager {
                 new ToggleCommand(),
                 new ReportCommand(),
                 new RegisterCommand(),
-                new LoginCommand()
+                new LoginCommand(),
+                new ClickGuiCommand()
         );
     }
 

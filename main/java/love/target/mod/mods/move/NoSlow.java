@@ -1,6 +1,5 @@
 package love.target.mod.mods.move;
 
-import love.target.Wrapper;
 import love.target.eventapi.EventTarget;
 import love.target.events.EventPostUpdate;
 import love.target.events.EventPreUpdate;
@@ -19,7 +18,7 @@ import org.apache.commons.lang3.RandomUtils;
  */
 
 public class NoSlow extends Mod {
-    private final ModeValue mode = new ModeValue("Mode","Vanilla",new String[]{"Vanilla","NCP","Watchdog"});
+    public static final ModeValue mode = new ModeValue("Mode","Vanilla",new String[]{"Vanilla","NCP","Watchdog","AAC"});
 
     public NoSlow() {
         super("NoSlow", Category.MOVE);
@@ -37,6 +36,10 @@ public class NoSlow extends Mod {
                 return;
             }
 
+            if (mc.player.isMoving() && mc.player.isBlocking()) {
+                mc.getNetHandler().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+            }
+        } else if (mode.isCurrentValue("AAC")) {
             if (mc.player.isMoving() && mc.player.isBlocking()) {
                 mc.getNetHandler().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             }

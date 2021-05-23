@@ -1,9 +1,9 @@
 package love.target.mod.mods.move;
 
-import love.target.Wrapper;
 import love.target.eventapi.EventTarget;
 import love.target.events.EventMove;
 import love.target.mod.Mod;
+import love.target.mod.ModManager;
 import love.target.mod.value.values.BooleanValue;
 import love.target.mod.value.values.ModeValue;
 import love.target.mod.value.values.NumberValue;
@@ -77,7 +77,7 @@ public class Speed extends Mod {
             }
             if (mc.player.fallDistance > 0.5 && fallTimer.getValue()) {
                 mc.timer.timerSpeed = 1.03f;
-            } else {
+            } else if (!ModManager.getModEnableByName("Timer")) {
                 mc.timer.timerSpeed = 1.0f;
             }
             MoveUtils.setSpeedEvent(e, this.movementSpeed);
@@ -116,7 +116,7 @@ public class Speed extends Mod {
 
             if (mc.player.fallDistance > 0.5 && fallTimer.getValue()) {
                 mc.timer.timerSpeed = 1.03f;
-            } else {
+            } else if (!ModManager.getModEnableByName("Timer")) {
                 mc.timer.timerSpeed = 1f;
             }
 

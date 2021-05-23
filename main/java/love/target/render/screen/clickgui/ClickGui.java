@@ -10,6 +10,8 @@ import com.utils.string.StringUtils;
 import love.target.Wrapper;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
+import love.target.eventapi.EventManager;
+import love.target.events.EventTest;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
@@ -465,12 +467,17 @@ public class ClickGui extends GuiScreen {
                 consoleTextField.drawTextBox();
 
                 if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && consoleTextField.getText() != null && !StringUtils.isEmpty(consoleTextField.getText())) {
-                    if (consoleTextField.getText().equals("clear")) {
+                    if (consoleTextField.getText().equalsIgnoreCase("clear")) {
                         consoleListHeight = 0;
                         consoleStrings.clear();
                     } else {
                         consoleWheel = 11;
                     }
+
+                    if (consoleTextField.getText().equalsIgnoreCase("test")) {
+                        EventManager.call(new EventTest());
+                    }
+
                     consoleStrings.add("] " + consoleTextField.getText());
                     consoleTextField.setText("");
                 }

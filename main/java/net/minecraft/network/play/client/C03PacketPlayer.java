@@ -25,6 +25,10 @@ public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
         this.onGround = isOnGround;
     }
 
+    public void setY_JESUS0(double y) {
+        this.y = y;
+    }
+
     /**
      * Passes this Packet on to the NetHandler for processing.
      */

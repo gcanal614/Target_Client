@@ -16,7 +16,16 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerListDesigner extends Designer {
-    private static final String[] killMessage = new String[]{"was killed by ","was thrown into the void by ","was thrown off a cliff by ","was deleted by ","was purified by "};
+    private static final String[] killMessage = new String[]{
+            "was killed by ",
+            "was thrown into the void by ",
+            "was thrown off a cliff by ",
+            "was deleted by ",
+            "was purified by ",
+            "was scared off an edge by ",
+            "was socked by ",
+            "was oinked by "
+    };
     private List<PlayerListObject> players = new CopyOnWriteArrayList<>();
     private PlayerListObject no1Player;
 

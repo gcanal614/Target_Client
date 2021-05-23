@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import love.target.mod.ModManager;
 import love.target.mod.mods.fight.HitBox;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -48,6 +49,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import sun.plugin2.message.ModalityChangeMessage;
 
 public abstract class Entity implements ICommandSender
 {
@@ -1105,6 +1107,11 @@ public abstract class Entity implements ICommandSender
     public boolean isInWater()
     {
         return this.inWater;
+    }
+
+    public boolean isInLiquid()
+    {
+        return this.inWater || this.isInLava();
     }
 
     /**

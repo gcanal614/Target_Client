@@ -40,7 +40,7 @@ public class LongJump extends Mod {
                 MoveUtils.setSpeed(0.4);
                 mc.player.motionY = 0.55;
             } else {
-                MoveUtils.setSpeed(Math.max(0.39,MoveUtils.getSpeed()));
+                MoveUtils.setSpeed(Math.max(0.36,MoveUtils.getSpeed()));
                 airTicks++;
             }
         }

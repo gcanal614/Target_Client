@@ -6,6 +6,7 @@ import com.utils.logger.LoggerCreator;
 import love.target.command.CommandManager;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
+import love.target.events.EventPreUpdate;
 import love.target.mod.ModManager;
 import love.target.other.object.Link;
 import love.target.render.font.FontManager;
@@ -131,6 +132,22 @@ public class Wrapper {
         double zDif = entity.posZ - entity.prevPosZ;
         double lastDist = Math.sqrt(xDif * xDif + zDif * zDif) * 20.0;
         return String.format("%." + format + "f", lastDist * mc.timer.timerSpeed);
+    }
+
+    public static void setPlayerYawPitch(float yaw,float pitch,EventPreUpdate e) {
+        setPlayerYaw(yaw,e);
+        setPlayerPitch(pitch,e);
+    }
+
+    public static void setPlayerYaw(float yaw, EventPreUpdate event) {
+        event.setYaw(yaw);
+        mc.player.rotationYawHead = yaw;
+        mc.player.renderYawOffset = yaw;
+    }
+
+    public static void setPlayerPitch(float pitch, EventPreUpdate event) {
+        event.setPitch(pitch);
+        mc.player.rotationPitchHead = pitch;
     }
 
     public static String getClientName() {

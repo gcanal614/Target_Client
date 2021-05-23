@@ -13,6 +13,7 @@ import love.target.mod.mods.other.*;
 import love.target.mod.mods.player.*;
 import love.target.mod.mods.visual.*;
 import love.target.mod.mods.world.AutoDoor;
+import love.target.mod.mods.world.Breaker;
 import love.target.mod.mods.world.Scaffold;
 import love.target.render.screen.clickgui.ClickGui;
 import net.minecraft.client.Minecraft;
@@ -34,15 +35,15 @@ public class ModManager {
         /* VISUAL */
         registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD(),new NoHurtCam());
         /* MOVE */
-        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint(),new Clip(),new LongJump());
+        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint(),new Clip(),new LongJump(),new NoWaterPush(),new Jesus());
         /* PLAYER */
-        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace(),new SpeedMine());
+        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace(),new SpeedMine(),new AntiCactus());
         /* ITEM */
         registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager(),new AutoSword());
         /* OTHER */
-        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug(),new PenShen());
+        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug(),new PenShen(),new AutoPlay(),new AntiTrap(),new GhostHand(),new AutoFish());
         /* WORLD */
-        registerMods(new Scaffold(),new AutoDoor());
+        registerMods(new Scaffold(),new AutoDoor(),new Breaker());
 
         registerModCommand();
     }

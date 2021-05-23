@@ -12,6 +12,7 @@ import love.target.mod.mods.move.*;
 import love.target.mod.mods.other.*;
 import love.target.mod.mods.player.*;
 import love.target.mod.mods.visual.*;
+import love.target.mod.mods.world.AutoDoor;
 import love.target.mod.mods.world.Scaffold;
 import love.target.render.screen.clickgui.ClickGui;
 import net.minecraft.client.Minecraft;
@@ -31,17 +32,17 @@ public class ModManager {
         /* FIGHT */
         registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical(),new Clicker(),new HitBox(),new Reach(),new AutoAim());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD(),new NoHurtCam());
         /* MOVE */
-        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint());
+        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint(),new Clip(),new LongJump());
         /* PLAYER */
-        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace());
+        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace(),new SpeedMine());
         /* ITEM */
-        registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager());
+        registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager(),new AutoSword());
         /* OTHER */
-        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug());
+        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug(),new PenShen());
         /* WORLD */
-        registerMods(new Scaffold());
+        registerMods(new Scaffold(),new AutoDoor());
 
         registerModCommand();
     }

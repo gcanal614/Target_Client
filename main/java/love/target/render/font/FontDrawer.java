@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -17,6 +18,7 @@ public class FontDrawer extends FontRenderer {
     @SuppressWarnings("unchecked")
     public FontDrawer(Font fontIn) {
         super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().getTextureManager(), true);
+        long startTime = System.currentTimeMillis();
         this.unicodeFont = new UnicodeFont(fontIn);
         this.unicodeFont.getEffects().add(new ColorEffect(Color.WHITE));
         System.out.println("Adding glyphs " + unicodeFont.getFont().getFontName() + unicodeFont.getFont().getSize());
@@ -28,6 +30,7 @@ public class FontDrawer extends FontRenderer {
             e.printStackTrace();
         }
         this.FONT_HEIGHT = this.unicodeFont.getHeight("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789") / 2;
+        System.out.println("加载 " + unicodeFont.getFont().getFontName() + unicodeFont.getFont().getSize() + " 用了" + ((System.currentTimeMillis() - startTime) / 1000.0) + "秒");
     }
 
     public int drawStringDirectly(String string, float x, float y, int color) {

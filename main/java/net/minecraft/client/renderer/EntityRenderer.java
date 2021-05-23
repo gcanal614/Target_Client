@@ -15,6 +15,7 @@ import love.target.eventapi.EventManager;
 import love.target.events.Event3D;
 import love.target.mod.ModManager;
 import love.target.mod.mods.fight.Reach;
+import love.target.notification.NotificationManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -687,6 +688,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float partialTicks)
     {
+        if (ModManager.getModEnableByName("NoHurtCam")) return;
+
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
@@ -2229,6 +2232,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
         GlStateManager.translate(0.0F, 0.0F, -2000.0F);
+        NotificationManager.draw(scaledresolution,mc);
     }
 
     /**

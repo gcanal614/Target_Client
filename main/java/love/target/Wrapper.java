@@ -1,5 +1,6 @@
 package love.target;
 
+import com.utils.file.FileUtils;
 import com.utils.logger.Logger;
 import com.utils.logger.LoggerCreator;
 import love.target.command.CommandManager;
@@ -17,6 +18,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.Display;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,11 +29,12 @@ public class Wrapper {
     public static final Minecraft mc = Minecraft.getMinecraft();
     private static final Logger<Object> logger = LoggerCreator.getLoggerObject(Wrapper.class);
     private static final String CLIENT_NAME = "Target";
-    private static final String CLIENT_VERSION = "Beta -> 210522 #0";
+    private static final String CLIENT_VERSION = "Beta -> 210523 #0";
     private static final String CLIENT_FILE_PATH = Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/target/";
     private static final Config NORMAL_CONFIG = new Config("",true);
     private static final Wrapper Instance = new Wrapper();
     private static final List<Link> links = new CopyOnWriteArrayList<>();
+    private static final List<String> penShenStrings = new CopyOnWriteArrayList<>();
 
     private static long runTicks;
 
@@ -39,10 +43,17 @@ public class Wrapper {
      * @see Minecraft
      */
     public void onStartGame() {
-        links.add(new Link(new ResourceLocation("textures/gui/icons/github.png"),"GitHub","https://github.com/yaskylan/Target_Client"));
+        links.add(new Link(new ResourceLocation("textures/gui/icons/github.png"), "GitHub", "https://github.com/yaskylan/Target_Client"));
         initializationManagers();
         ConfigManager.loadConfig(NORMAL_CONFIG);
         AltFileSaver.readAlts();
+        try {
+            if (new File(getClientFilePath() + "pen_shen.txt").exists()) {
+                penShenStrings.addAll(FileUtils.readLine(new FileInputStream(getClientFilePath() + "pen_shen.txt")));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         Display.setTitle("Minecraft 1.8.9 -> Target " + getClientVersion());
         getLogger().info("Client的版本为" + getClientVersion());
         getLogger().warn("本次启动浪费了" + (LaunchUtils.getLaunchTime() / 1000L) + "秒的人生");
@@ -112,7 +123,7 @@ public class Wrapper {
     public static double speedBsDouble(Entity entity) {
         double xDif = entity.posX - entity.prevPosX;
         double zDif = entity.posZ - entity.prevPosZ;
-        return Math.sqrt(xDif * xDif + zDif * zDif) * 20.0;
+        return (Math.sqrt(xDif * xDif + zDif * zDif) * 20.0) * mc.timer.timerSpeed;
     }
 
     public static String speedBsString(Entity entity, int format) {
@@ -152,5 +163,9 @@ public class Wrapper {
 
     public static Config getNormalConfig() {
         return NORMAL_CONFIG;
+    }
+
+    public static List<String> getPenShenStrings() {
+        return penShenStrings;
     }
 }

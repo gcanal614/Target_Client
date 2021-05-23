@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import love.target.mod.ModManager;
+import love.target.mod.mods.visual.BlockHitting;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -1334,6 +1338,11 @@ public abstract class EntityLivingBase extends Entity
      */
     private int getArmSwingAnimationEnd()
     {
+        if (this == Minecraft.getMinecraft().player) {
+            if (ModManager.getModEnableByName("BlockHitting")) {
+                return 6 + (int)(6 - 6 * BlockHitting.swingSpeed.getValue()) * 2;
+            }
+        }
         return this.isPotionActive(Potion.digSpeed) ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6);
     }
 

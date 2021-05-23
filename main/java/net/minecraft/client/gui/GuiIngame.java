@@ -7,8 +7,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import love.target.Wrapper;
 import love.target.eventapi.EventManager;
 import love.target.events.Event2D;
+import love.target.events.EventTitle;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -1154,6 +1156,7 @@ public class GuiIngame extends Gui
         }
         else if (title != null)
         {
+            EventManager.call(new EventTitle(title));
             this.displayedTitle = title;
             this.titlesTimer = this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut;
         }

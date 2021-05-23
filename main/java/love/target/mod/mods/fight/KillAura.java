@@ -48,6 +48,7 @@ public class KillAura extends Mod {
     private static boolean isBlocking;
     public static float Where;
     private boolean isAttacking;
+    private final TimerUtil multiRotationTimerUtil = new TimerUtil();
     private final TimerUtil rotationTimerUtil = new TimerUtil();
     private final ModeValue mode = new ModeValue("Mode", "Single");
     private final ModeValue prmode = new ModeValue("TargetMode", "Range");
@@ -59,6 +60,7 @@ public class KillAura extends Mod {
     private final NumberValue reach = new NumberValue("AttackRange", 4.1, 1.0, 8.0, 0.1);
     private final NumberValue throughWallReach = new NumberValue("ThroughWallRange", 3.0, 0.0, 8.0, 0.1);
     private final NumberValue switchDelay = new NumberValue("SwitchDelay", 800, 0, 2000, 1);
+    private final NumberValue multiMaxTarget = new NumberValue("MultiMaxTarget", 5, 1, 10, 1);
     private final BooleanValue blocking = new BooleanValue("AutoBlock", true);
     private final BooleanValue players = new BooleanValue("Players", true);
     private final BooleanValue animals = new BooleanValue("Animals", false);
@@ -69,9 +71,9 @@ public class KillAura extends Mod {
 
     public KillAura() {
         super("KillAura", Category.FIGHT);
-        this.mode.addModes("Single", "Switch");
+        this.mode.addModes("Single", "Switch","Multi");
         this.prmode.addModes("Range", "Fov", "Health", "Angle");
-        this.addValues(this.mode, this.prmode, rotationMode,this.maxCPS, this.minCPS, this.hurtTime, this.fov, this.reach, this.throughWallReach, this.switchDelay, this.blocking, this.players, this.animals, this.mobs, this.villager, this.invis, this.died);
+        this.addValues(this.mode, this.prmode, rotationMode,this.maxCPS, this.minCPS, this.hurtTime, this.fov, this.reach, this.throughWallReach, this.switchDelay, multiMaxTarget,this.blocking, this.players, this.animals, this.mobs, this.villager, this.invis, this.died);
     }
 
     private void startBlocking() {
@@ -153,38 +155,44 @@ public class KillAura extends Mod {
             }
         } else if (this.targets.size() > 1 && mc.player.ticksExisted % 2 == 0 && this.mode.isCurrentValue("Single")) {
             this.index = 0;
+        } else if (this.targets.size() > 1 && mode.isCurrentValue("Multi")) {
+            SwitchTarget();
         }
         if (!this.targets.isEmpty()) {
             if (this.index >= this.targets.size()) {
                 this.index = 0;
             }
             if ((curtarget = this.targets.get(this.index)) != null) {
-                float[] rot;
-
-                switch (rotationMode.getValue()) {
-                    case "Sigma":
-                        rot = RotationUtil.getPredictedRotations(curtarget);
-                        break;
-                    case "Normal":
-                    default:
-                        rot = getNewRotations(curtarget);
-                        break;
-                }
-
-                e.setYaw(rot[0]);
-                e.setPitch(rot[1]);
-                mc.player.rotationYawHead = rot[0];
-                mc.player.renderYawOffset = rot[0];
-                mc.player.rotationPitchHead = rot[1];
-                if (curtarget.hurtTime >= this.hurtTime.getValue()) {
-                    return;
-                }
-                sYaw = mc.player.rotationYaw;
-                sPitch = mc.player.rotationPitch;
+                setRotation(e, curtarget);
             }
         } else {
             Where = 0.0f;
         }
+    }
+
+    private void setRotation(EventPreUpdate e,EntityLivingBase entityLivingBase) {
+        float[] rot;
+
+        switch (rotationMode.getValue()) {
+            case "Sigma":
+                rot = RotationUtil.getPredictedRotations(entityLivingBase);
+                break;
+            case "Normal":
+            default:
+                rot = getNewRotations(entityLivingBase);
+                break;
+        }
+
+        e.setYaw(rot[0]);
+        e.setPitch(rot[1]);
+        mc.player.rotationYawHead = rot[0];
+        mc.player.renderYawOffset = rot[0];
+        mc.player.rotationPitchHead = rot[1];
+        if (entityLivingBase.hurtTime >= this.hurtTime.getValue()) {
+            return;
+        }
+        sYaw = mc.player.rotationYaw;
+        sPitch = mc.player.rotationPitch;
     }
 
     @EventTarget
@@ -250,21 +258,50 @@ public class KillAura extends Mod {
     }
 
     public void attack() {
-        if ((double)mc.player.getDistanceToEntity(curtarget) > this.reach.getValue()) {
-            isBlockReach = true;
-            return;
+        if (mode.isCurrentValue("Multi")) {
+            boolean cantSwingItem = false;
+            for (int i = 0;i < targets.size();i++) {
+                if (i > multiMaxTarget.getValue() - 1) continue;
+                EntityLivingBase entityLivingBase = targets.get(i);
+                if ((double)mc.player.getDistanceToEntity(entityLivingBase) > this.reach.getValue()) {
+                    isBlockReach = true;
+                    return;
+                }
+                this.isAttacking = true;
+
+                if (!cantSwingItem) {
+                    if (this.blocking.getValue()) {
+                        this.stopBlocking();
+                    }
+                    mc.playerController.syncCurrentPlayItem();
+                    mc.player.swingItem();
+                }
+                mc.getNetHandler().sendPacket(new C02PacketUseEntity(entityLivingBase, C02PacketUseEntity.Action.ATTACK));
+                if (!cantSwingItem) {
+                    if (this.blocking.getValue() && this.canBlock()) {
+                        this.startBlocking();
+                    }
+                    cantSwingItem = true;
+                }
+                this.isAttacking = false;
+            }
+        } else {
+            if ((double) mc.player.getDistanceToEntity(curtarget) > this.reach.getValue()) {
+                isBlockReach = true;
+                return;
+            }
+            this.isAttacking = true;
+            if (this.blocking.getValue()) {
+                this.stopBlocking();
+            }
+            mc.playerController.syncCurrentPlayItem();
+            mc.player.swingItem();
+            mc.getNetHandler().sendPacket(new C02PacketUseEntity((Entity) curtarget, C02PacketUseEntity.Action.ATTACK));
+            if (this.blocking.getValue() && this.canBlock()) {
+                this.startBlocking();
+            }
+            this.isAttacking = false;
         }
-        this.isAttacking = true;
-        if (this.blocking.getValue()) {
-            this.stopBlocking();
-        }
-        mc.playerController.syncCurrentPlayItem();
-        mc.player.swingItem();
-        mc.getNetHandler().sendPacket(new C02PacketUseEntity((Entity)curtarget, C02PacketUseEntity.Action.ATTACK));
-        if (this.blocking.getValue() && this.canBlock()) {
-            this.startBlocking();
-        }
-        this.isAttacking = false;
     }
 
     private List<EntityLivingBase> sortList(List<EntityLivingBase> list) {

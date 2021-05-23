@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.utils.string.StringUtils;
 import love.target.Wrapper;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
@@ -22,6 +23,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 /**
@@ -50,10 +52,16 @@ public class ClickGui extends GuiScreen {
     static boolean valueEnableDown = false;
     static boolean configButtonDown = false;
 
+    private static final List<String> consoleStrings = new CopyOnWriteArrayList<>();
+    private GuiTextField consoleTextField;
+    private int consoleVar;
+    private float consoleWheel,consoleListHeight;
+
     @Override
     public void initGui() {
         super.initGui();
         this.search = new GuiTextField(114514, this.mc.fontRenderer, (int)windowX + 10, (int)windowY + 250, 70, 20);
+        consoleTextField = new GuiTextField(0,mc.fontRenderer,0,0,0,0);
     }
 
     @Override
@@ -441,9 +449,76 @@ public class ClickGui extends GuiScreen {
             if (!Mouse.isButtonDown(0)) {
                 configButtonDown = false;
             }
-        }
+        } else if (selectType == ClickType.CONSOLE) {
+            RenderUtils.drawRect(windowX + 2,windowY + height - 11,windowX + width - 3,windowY + height - 2,new Color(62,70,55).getRGB());
+            RenderUtils.drawRect(windowX + 1,windowY + height - 11,windowX + 2,windowY + height - 1,new Color(40,46,34).getRGB());
+            RenderUtils.drawRect(windowX + 1,windowY + height - 11,windowX + width - 2,windowY + height - 12,new Color(40,46,34).getRGB());
+            RenderUtils.drawRect(windowX + 2,windowY + height - 1,windowX + width - 2,windowY + height - 2,new Color(136,145,128).getRGB());
+            RenderUtils.drawRect(windowX + width - 3,windowY + height - 11,windowX + width - 2,windowY + height - 1,new Color(136,145,128).getRGB());
+            if (consoleTextField != null) {
+                consoleTextField.xPosition = (int) windowX + 3;
+                consoleTextField.yPosition = (int) (windowY + height - 11);
+                consoleTextField.setWidth((int) width - 4);
+                consoleTextField.setHeight(10);
+                consoleTextField.setMaxStringLength(100);
+                consoleTextField.setEnableBackgroundDrawing(false);
+                consoleTextField.drawTextBox();
 
-        //this.drawCursor(mouseX,mouseY);
+                if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) && consoleTextField.getText() != null && !StringUtils.isEmpty(consoleTextField.getText())) {
+                    if (consoleTextField.getText().equals("clear")) {
+                        consoleListHeight = 0;
+                        consoleStrings.clear();
+                    } else {
+                        consoleWheel = 11;
+                    }
+                    consoleStrings.add("] " + consoleTextField.getText());
+                    consoleTextField.setText("");
+                }
+            }
+
+            RenderUtils.drawBorderedRect(windowX + 2,windowY + 21,windowX + width - 2,windowY + height - 15,2,new Color(40,46,34).getRGB(),new Color(62,70,55).getRGB());
+            RenderUtils.drawRect(windowX + width - 10,windowY + 22,windowX + width - 3,windowY + height - 16,new Color(90,106,80).getRGB());
+
+            if (consoleStrings.size() > 25) {
+                RenderUtils.drawRect(windowX + width - 9, Math.max(windowY + 23 + (consoleStrings.size() - 25) - consoleVar,windowY + 23), windowX + width - 4, windowY + height - 17 - consoleVar, new Color(76, 88, 68).getRGB());
+            }
+            RenderUtils.startGlScissor((int) windowX + 2,(int) windowY + 21,(int) width - 2,(int) height - 38);
+            float textY = windowY + 22 - consoleListHeight;
+            for (String s : consoleStrings) {
+                FontManager.ipix16.drawString(s,windowX + 3,textY,-1);
+                textY += 11;
+            }
+            RenderUtils.stopGlScissor();
+
+            if (Mouse.hasWheel()) {
+                int w = Mouse.getDWheel();
+                if (w < 0) {
+                    if (consoleListHeight < consoleStrings.size() * 11 - 275) {
+                        if (consoleVar > 0) {
+                            consoleVar--;
+                        }
+                        consoleWheel = 20;
+                    }
+                } else if (w > 0) {
+                    if (consoleListHeight > 0) {
+                        consoleVar++;
+                        consoleWheel = -20;
+                    }
+                }
+            }
+
+            if (this.consoleWheel < 0) {
+                if (consoleListHeight > 0) {
+                    --consoleListHeight;
+                }
+                ++this.consoleWheel;
+            } else if (this.consoleWheel > 0) {
+                if (consoleListHeight < consoleStrings.size() * 11 - 275) {
+                    ++consoleListHeight;
+                }
+                --this.consoleWheel;
+            }
+        }
     }
 
     private void drawCursor(int mouseX,int mouseY) {
@@ -471,6 +546,10 @@ public class ClickGui extends GuiScreen {
                 }
             }
         }
+
+        if (selectType == ClickType.CONSOLE && consoleTextField != null) {
+            consoleTextField.textboxKeyTyped(typedChar, keyCode);
+        }
     }
 
     @Override
@@ -487,6 +566,10 @@ public class ClickGui extends GuiScreen {
                     textValue.getTextField().mouseClicked(mouseX, mouseY, mouseButton);
                 }
             }
+        }
+
+        if (selectType == ClickType.CONSOLE && consoleTextField != null) {
+            consoleTextField.mouseClicked(mouseX, mouseY, mouseButton);
         }
     }
 

@@ -1,7 +1,5 @@
 package love.target.mod.mods.visual;
 
-import com.utils.color.ColorUtils;
-import love.target.Wrapper;
 import love.target.eventapi.EventTarget;
 import love.target.events.Event2D;
 import love.target.mod.Mod;
@@ -9,6 +7,7 @@ import love.target.mod.mods.fight.KillAura;
 import love.target.render.font.FontManager;
 import love.target.utils.render.RenderUtils;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,9 +25,12 @@ public class TargetHUD extends Mod {
 
     @EventTarget
     public void on2D(Event2D e) {
-        EntityLivingBase targetEntity = KillAura.curtarget;
-        float x = e.getScaledResolution().getScaledWidth() / 2.0f + 50;
-        float y = e.getScaledResolution().getScaledHeight() / 2.0f + 50;
+        renderTargetHUD(e.getScaledResolution(),KillAura.curtarget);
+    }
+
+    public void renderTargetHUD(ScaledResolution scaledResolution, EntityLivingBase targetEntity) {
+        float x = scaledResolution.getScaledWidth() / 2.0f + 50;
+        float y = scaledResolution.getScaledHeight() / 2.0f + 50;
         if (targetEntity != null) {
             float percentageOfHealth = Math.min(100,(targetEntity.getHealth() / targetEntity.getMaxHealth()) * 100);
             if (lastEntity == targetEntity) {

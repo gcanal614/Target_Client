@@ -3,7 +3,8 @@ package love.target.render.screen.clickgui;
 public enum ClickType {
     HOME("Home"),
     DESIGNER("Designer"),
-    CONFIG("Config");
+    CONFIG("Config"),
+    CONSOLE("Console");
 
     private final String name;
 

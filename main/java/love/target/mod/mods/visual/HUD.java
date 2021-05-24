@@ -3,8 +3,10 @@ package love.target.mod.mods.visual;
 import com.utils.string.StringUtils;
 import love.target.Wrapper;
 import love.target.designer.Designer;
+import love.target.designer.designers.TabGuiDesigner;
 import love.target.eventapi.EventTarget;
 import love.target.events.Event2D;
+import love.target.events.EventKey;
 import love.target.mod.Mod;
 import love.target.mod.value.values.BooleanValue;
 import love.target.mod.value.values.ColorValue;
@@ -31,6 +33,15 @@ public class HUD extends Mod {
     public HUD() {
         super("HUD", Category.VISUAL);
         addValues(arrayListColorMode,arrayListEdge,arrayListYWay,clientName,arrayListCustomColor,arrayListSort);
+    }
+
+    @EventTarget
+    public void onKey(EventKey e) {
+        for (Designer designer : GuiDesigner.designers) {
+            if (designer.getDesignerType() == Designer.DesignerType.TAB_GUI) {
+                ((TabGuiDesigner) designer).onKeyPress(e.getKeyCode());
+            }
+        }
     }
 
     @EventTarget

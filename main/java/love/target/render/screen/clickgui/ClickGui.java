@@ -17,6 +17,8 @@ import love.target.mod.ModManager;
 import love.target.mod.value.Value;
 import love.target.mod.value.ValueType;
 import love.target.mod.value.values.*;
+import love.target.notification.Notification;
+import love.target.notification.NotificationManager;
 import love.target.render.font.FontManager;
 import love.target.render.screen.designer.GuiDesigner;
 import love.target.utils.render.RenderUtils;
@@ -475,7 +477,7 @@ public class ClickGui extends GuiScreen {
                     }
 
                     if (consoleTextField.getText().equalsIgnoreCase("test")) {
-                        EventManager.call(new EventTest());
+                        NotificationManager.addNotification(new Notification("TEST","TEST MESSAGE 你好世界!", Notification.NotificationType.DEBUG,15000));
                     }
 
                     consoleStrings.add("] " + consoleTextField.getText());
@@ -492,7 +494,7 @@ public class ClickGui extends GuiScreen {
             RenderUtils.startGlScissor((int) windowX + 2,(int) windowY + 21,(int) width - 2,(int) height - 38);
             float textY = windowY + 22 - consoleListHeight;
             for (String s : consoleStrings) {
-                FontManager.ipix16.drawString(s,windowX + 3,textY,-1);
+                FontManager.zpix16.drawString(s,windowX + 5,textY,-1);
                 textY += 11;
             }
             RenderUtils.stopGlScissor();

@@ -843,10 +843,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
         boolean cantNoSlow = !ModManager.getModEnableByName("NoSlow");
 
         if (ModManager.getModEnableByName("NoSlow") && NoSlow.mode.isCurrentValue("AAC")) {
-            if (getHeldItem().getItem() instanceof ItemFood) {
-                cantNoSlow = true;
-            } else if (getHeldItem().getItem() instanceof ItemBow) {
-                cantNoSlow = true;
+            if (getHeldItem() != null) {
+                if (getHeldItem().getItem() instanceof ItemFood) {
+                    cantNoSlow = true;
+                } else if (getHeldItem().getItem() instanceof ItemBow) {
+                    cantNoSlow = true;
+                }
             }
         }
 

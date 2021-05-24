@@ -144,6 +144,9 @@ public class ConfigManager {
                     case INVENTORY_HUD:
                         GuiDesigner.addDesigner(new InventoryHUDDesigner(designerX,designerY));
                         break;
+                    case TAB_GUI:
+                        GuiDesigner.addDesigner(new TabGuiDesigner(designerX,designerY));
+                        break;
                 }
             }
         } catch (Exception e) {

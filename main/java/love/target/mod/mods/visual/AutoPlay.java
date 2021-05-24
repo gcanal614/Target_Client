@@ -55,7 +55,9 @@ public class AutoPlay extends Mod {
                 autoPlayY++;
             }
             if (timerUtil.hasReached(delay.getValue().longValue() * 1000L)) {
-                mc.player.sendChatMessage(command.getValue());
+                if (command.getValue() != null && !command.getValue().isEmpty()) {
+                    mc.player.sendChatMessage(command.getValue());
+                }
                 timerUtil.reset();
                 canDrawAutoPlay = false;
             }

@@ -34,7 +34,7 @@ public class TargetHUD extends Mod {
         if (targetEntity != null) {
             float percentageOfHealth = Math.min(100,(targetEntity.getHealth() / targetEntity.getMaxHealth()) * 100);
             if (lastEntity == targetEntity) {
-                nowHealth = (float) RenderUtils.getAnimationState(nowHealth, percentageOfHealth, 15);
+                nowHealth = (float) RenderUtils.getAnimationState(nowHealth, percentageOfHealth, 20);
             } else {
                 nowHealth = percentageOfHealth;
             }

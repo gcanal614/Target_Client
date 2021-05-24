@@ -12,5 +12,6 @@ public class DesignerMainMenu extends DesignerMenu {
         addButton(new DesignerMenuButton("Create PlayerList",() -> GuiDesigner.addDesigner(new PlayerListDesigner())));
         addButton(new DesignerMenuButton("Create SpeedList",() -> GuiDesigner.addDesigner(new SpeedListDesigner())));
         addButton(new DesignerMenuButton("Create InventoryHUD",() -> GuiDesigner.addDesigner(new InventoryHUDDesigner())));
+        addButton(new DesignerMenuButton("Create TabGui",() -> GuiDesigner.addDesigner(new TabGuiDesigner())));
     }
 }

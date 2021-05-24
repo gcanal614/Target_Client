@@ -17,6 +17,8 @@ public class FontManager {
 
     public static FontDrawer ipix16;
 
+    public static FontDrawer zpix16;
+
     public static void init() {
         yaHei14 = FontManager.getFont("msyh", 14.0f, FontType.TTF);
         yaHei16 = FontManager.getFont("msyh", 16.0f, FontType.TTF);
@@ -25,6 +27,7 @@ public class FontManager {
         yaHei24 = FontManager.getFont("msyh", 24.0f, FontType.TTF);
         cursor = FontManager.getFont("cursor",20.0f,FontType.TTF);
         ipix16 = FontManager.getFont("ipix_12px",16.0f,FontType.TTF);
+        zpix16 = FontManager.getFont("zpix",16.0f,FontType.TTF);
     }
 
     private static FontDrawer getFont(String fontName, float size, FontType type) {

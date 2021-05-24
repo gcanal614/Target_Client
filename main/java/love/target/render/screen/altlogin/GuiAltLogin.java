@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 
@@ -73,35 +74,39 @@ public class GuiAltLogin extends GuiScreen implements LoginOrAdd {
                 this.thread.start();
                 break;
             case ADD:
-                String a;
-                String pa;
+                ssss = EnumChatFormatting.YELLOW + "添加中";
+                new Thread(() -> {
+                    String data1;
+                    String a;
+                    String pa;
 
-                if (this.combined.getText().isEmpty()) {
-                    a = username.getText();
-                    pa = password.getText();
-                } else if (!this.combined.getText().isEmpty() && this.combined.getText().contains(":")) {
-                    data = this.combined.getText().split(":")[0];
-                    String p = this.combined.getText().split(":")[1];
-                    a = data.replaceAll(" ", "");
-                    pa = p.replaceAll(" ", "");
-                } else {
-                    a = username.getText();
-                    pa = password.getText();
-                }
-
-                if (pa.isEmpty()) {
-                    GuiAltManager.getAlts().add(new Alt(a,"NULL_PASSWORD",a));
-                    ssss = "登陆成功! " + a;
-                } else {
-                    Session s = AltLoginThread.createSession(a, pa);
-
-                    if (s == null) {
-                        ssss = "登录失败!";
+                    if (this.combined.getText().isEmpty()) {
+                        a = username.getText();
+                        pa = password.getText();
+                    } else if (!this.combined.getText().isEmpty() && this.combined.getText().contains(":")) {
+                        data1 = this.combined.getText().split(":")[0];
+                        String p = this.combined.getText().split(":")[1];
+                        a = data1.replaceAll(" ", "");
+                        pa = p.replaceAll(" ", "");
                     } else {
-                        GuiAltManager.getAlts().add(new Alt(a, pa, s.getProfile().getName()));
-                        ssss = "登陆成功! " + s.getProfile().getName();
+                        a = username.getText();
+                        pa = password.getText();
                     }
-                }
+
+                    if (pa.isEmpty()) {
+                        GuiAltManager.getAlts().add(new Alt(a, "NULL_PASSWORD", a));
+                        ssss = EnumChatFormatting.GREEN + "添加成功! " + a;
+                    } else {
+                        Session s = AltLoginThread.createSession(a, pa);
+
+                        if (s == null) {
+                            ssss = EnumChatFormatting.RED + "添加失败!";
+                        } else {
+                            GuiAltManager.getAlts().add(new Alt(a, pa, s.getProfile().getName()));
+                            ssss = EnumChatFormatting.GREEN + "添加成功! " + s.getProfile().getName();
+                        }
+                    }
+                },("Add Alt Thread")).start();
                 break;
         }
     }

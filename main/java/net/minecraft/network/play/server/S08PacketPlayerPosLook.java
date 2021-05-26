@@ -89,6 +89,14 @@ public class S08PacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         return this.pitch;
     }
 
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
     public Set<S08PacketPlayerPosLook.EnumFlags> func_179834_f()
     {
         return this.field_179835_f;

@@ -3,6 +3,9 @@ package net.minecraft.client.renderer.entity;
 import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
+
+import love.target.mod.ModManager;
+import love.target.mod.mods.visual.Grumm_Dinnerbone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -543,12 +546,22 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         {
             String s = EnumChatFormatting.getTextWithoutFormattingCodes(bat.getName());
 
-            if (s != null && (s.equals("Dinnerbone") || s.equals("Grumm")) && (!(bat instanceof EntityPlayer) || ((EntityPlayer)bat).isWearing(EnumPlayerModelParts.CAPE)))
+            if (s != null && (s.equals("Dinnerbone") || s.equals("Grumm")) && (!(bat instanceof EntityPlayer) || ((EntityPlayer)bat).isWearing(EnumPlayerModelParts.CAPE)) || getGrummEnable(bat))
             {
                 GlStateManager.translate(0.0F, bat.height + 0.1F, 0.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
             }
         }
+    }
+
+    private boolean getGrummEnable(EntityLivingBase entity) {
+        if (ModManager.getModEnableByName("Grumm")) {
+            if (Grumm_Dinnerbone.all.getValue()) {
+                return true;
+            }
+            return entity == Minecraft.getMinecraft().player;
+        }
+        return false;
     }
 
     /**

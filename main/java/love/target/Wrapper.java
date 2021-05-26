@@ -8,6 +8,8 @@ import love.target.config.Config;
 import love.target.config.ConfigManager;
 import love.target.events.EventPreUpdate;
 import love.target.mod.ModManager;
+import love.target.mod.value.values.BooleanValue;
+import love.target.other.ClientSettings;
 import love.target.other.object.Link;
 import love.target.render.font.FontManager;
 import love.target.render.screen.altlogin.AltFileSaver;
@@ -36,6 +38,7 @@ public class Wrapper {
     private static final Wrapper Instance = new Wrapper();
     private static final List<Link> links = new CopyOnWriteArrayList<>();
     private static final List<String> penShenStrings = new CopyOnWriteArrayList<>();
+    private static final List<BooleanValue> ClientSettingList = new CopyOnWriteArrayList<>();
 
     private static long runTicks;
 
@@ -45,10 +48,11 @@ public class Wrapper {
      */
     public void onStartGame() {
         links.add(new Link(new ResourceLocation("textures/gui/icons/github.png"), "GitHub", "https://github.com/yaskylan/Target_Client"));
+        ClientSettingList.add(ClientSettings.MOD_ENABLE_NOTIFICATION_VALUE);
         initializationManagers();
         ConfigManager.loadConfig(NORMAL_CONFIG);
-        AltFileSaver.readAlts();
         try {
+        AltFileSaver.readAlts();
             if (new File(getClientFilePath() + "pen_shen.txt").exists()) {
                 penShenStrings.addAll(FileUtils.readLine(new FileInputStream(getClientFilePath() + "pen_shen.txt")));
             }
@@ -184,5 +188,9 @@ public class Wrapper {
 
     public static List<String> getPenShenStrings() {
         return penShenStrings;
+    }
+
+    public static List<BooleanValue> getClientSettingList() {
+        return ClientSettingList;
     }
 }

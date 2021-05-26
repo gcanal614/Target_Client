@@ -29,6 +29,14 @@ public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
         this.y = y;
     }
 
+    public void setX_SPIDER0(double x) {
+        this.x = x;
+    }
+
+    public void setZ_SPIDER0(double z) {
+        this.z = z;
+    }
+
     /**
      * Passes this Packet on to the NetHandler for processing.
      */

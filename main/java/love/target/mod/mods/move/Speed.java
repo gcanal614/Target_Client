@@ -17,8 +17,8 @@ import net.minecraft.util.BlockPos;
 import java.util.List;
 
 public class Speed extends Mod {
-    private final ModeValue mode = new ModeValue("Mode","NCP",new String[]{"NCP","Test"});
-    private final NumberValue moveBoost = new NumberValue("MoveBoost",1.0,1.0,10.0,0.1);
+    private final ModeValue mode = new ModeValue("Mode","Watchdog",new String[]{"NCP","Watchdog"});
+    private final NumberValue moveBoost = new NumberValue("MoveBoost",1.1,1.0,10.0,0.1);
     private final NumberValue iceBoost = new NumberValue("IceBoost",1.2,1.0,10.0,0.1);
     private final NumberValue damageBoost = new NumberValue("DamageBoost",1.0,1.0,10.0,0.1);
     private final BooleanValue jumpTimer = new BooleanValue("JumpTimer",false);
@@ -84,7 +84,7 @@ public class Speed extends Mod {
             if (mc.player.isMoving()) {
                 ++this.stage;
             }
-        } else if (mode.isCurrentValue("Test")) {
+        } else if (mode.isCurrentValue("Watchdog")) {
             movementSpeed = MoveUtils.getSpeed() * moveBoost.getValue();
             if (mc.player.onGround && mc.player.isMoving() && !mc.player.isInWater() && !mc.player.isInLava()) {
                 movementSpeed *= 1.05;

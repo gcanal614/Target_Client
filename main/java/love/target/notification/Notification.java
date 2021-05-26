@@ -1,12 +1,20 @@
 package love.target.notification;
 
 import love.target.utils.TimerUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class Notification {
     private final String title;
     private final String message;
     private final NotificationType type;
     private final long time;
+
+    public boolean canRemove = false;
+    public boolean setY = false;
+
+    public double animationX = new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth();
+    public float animationY;
 
     public final TimerUtil timerUtil = new TimerUtil();
 
@@ -15,6 +23,7 @@ public class Notification {
         this.message = message;
         this.type = type;
         this.time = time;
+        timerUtil.reset();
     }
 
     public String getTitle() {
@@ -37,6 +46,7 @@ public class Notification {
         INFO,
         WARNING,
         ERROR,
+        SUCCESS,
         DEBUG
     }
 }

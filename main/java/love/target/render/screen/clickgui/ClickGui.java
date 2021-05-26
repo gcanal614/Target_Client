@@ -1,7 +1,6 @@
 package love.target.render.screen.clickgui;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -10,8 +9,6 @@ import com.utils.string.StringUtils;
 import love.target.Wrapper;
 import love.target.config.Config;
 import love.target.config.ConfigManager;
-import love.target.eventapi.EventManager;
-import love.target.events.EventTest;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
 import love.target.mod.value.Value;
@@ -25,8 +22,6 @@ import love.target.utils.render.RenderUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -54,6 +49,7 @@ public class ClickGui extends GuiScreen {
     int valueWhell = 0;
     static boolean modEnableDown = false;
     static boolean valueEnableDown = false;
+    static boolean settingEnableDown = false;
     static boolean configButtonDown = false;
 
     private static final List<String> consoleStrings = new CopyOnWriteArrayList<>();
@@ -161,10 +157,10 @@ public class ClickGui extends GuiScreen {
             }
             if (Wrapper.isHovered(windowX + 435.0f, windowY + 50.0f, windowX + 435.0f + 155.0f, windowY + this.height - 15.0f, mouseX, mouseY)) {
                 if (scroll < 0 && valueStart < qwe - 200.0f) {
-                    this.valueWhell += 10;
+                    this.valueWhell = 30;
                 }
                 if (scroll > 0 && valueStart > 0.0f) {
-                    this.valueWhell -= 10;
+                    this.valueWhell = -30;
                 }
             }
             if (this.valueWhell < 0) {
@@ -353,6 +349,7 @@ public class ClickGui extends GuiScreen {
                                     try {
                                         if (!this.textField.getText().isEmpty()) {
                                             ConfigManager.saveConfig(new Config(this.textField.getText()));
+                                            NotificationManager.addNotification("Config","Configuration saved successfully", Notification.NotificationType.INFO,5000);
                                             this.mc.displayGuiScreen(new ClickGui());
                                         }
                                     }
@@ -426,6 +423,7 @@ public class ClickGui extends GuiScreen {
                     RenderUtils.drawRect(windowX + 91,windowY + height - 35,windowX + 131,windowY + height - 22,new Color(0,0,0,50).getRGB());
                     if (Mouse.isButtonDown(0) && !configButtonDown) {
                         ConfigManager.loadConfig(selectConfig);
+                        NotificationManager.addNotification("Config","Configuration loaded successfully", Notification.NotificationType.INFO,5000);
                         configButtonDown = true;
                     }
                 }
@@ -434,6 +432,7 @@ public class ClickGui extends GuiScreen {
                     RenderUtils.drawRect(windowX + 133,windowY + height - 35,windowX + 173,windowY + height - 22,new Color(0,0,0,50).getRGB());
                     if (Mouse.isButtonDown(0) && !configButtonDown) {
                         ConfigManager.removeConfig(selectConfig);
+                        NotificationManager.addNotification("Config","Configuration removed successfully", Notification.NotificationType.WARNING,5000);
                         selectConfig = null;
                         configButtonDown = true;
                     }
@@ -444,6 +443,7 @@ public class ClickGui extends GuiScreen {
                     if (Mouse.isButtonDown(0) && !configButtonDown) {
                         ConfigManager.removeConfig(selectConfig);
                         ConfigManager.saveConfig(new Config(selectConfig.getName()));
+                        NotificationManager.addNotification("Config","Configuration Updated Successfully", Notification.NotificationType.INFO,5000);
                         selectConfig = null;
                         configButtonDown = true;
                     }
@@ -477,7 +477,12 @@ public class ClickGui extends GuiScreen {
                     }
 
                     if (consoleTextField.getText().equalsIgnoreCase("test")) {
-                        NotificationManager.addNotification(new Notification("TEST","TEST MESSAGE 你好世界!", Notification.NotificationType.DEBUG,15000));
+                        NotificationManager.addNotification("Ts12","长文本测试LongTextTest 0123456789 abcsjidoajdiosajiodjioasjiodjiosdjio", Notification.NotificationType.DEBUG,5000);
+                        NotificationManager.addNotification("Ts12","长文本测试LongTextTest 0123456789 abcsjidoajdiosajiodjioasjiodjiosdjio", Notification.NotificationType.INFO,3000);
+                        NotificationManager.addNotification("Ts12","长文本测试LongTextTest 0123456789 abcsjidoajdiosajiodjioasjiodjiosdjio", Notification.NotificationType.WARNING,2000);
+                        NotificationManager.addNotification("Ts12","长文本测试LongTextTest 0123456789 abcsjidoajdiosajiodjioasjiodjiosdjio", Notification.NotificationType.SUCCESS,10000);
+                        NotificationManager.addNotification("Ts12","长文本测试LongTextTest 0123456789 abcsjidoajdiosajiodjioasjiodjiosdjio", Notification.NotificationType.ERROR,15000);
+
                     }
 
                     consoleStrings.add("] " + consoleTextField.getText());
@@ -526,6 +531,31 @@ public class ClickGui extends GuiScreen {
                     ++consoleListHeight;
                 }
                 --this.consoleWheel;
+            }
+        } else if (selectType == ClickType.CLIENT_SETTING) {
+            float settingY = windowY + 20;
+            for (BooleanValue value : Wrapper.getClientSettingList()) {
+                if (value.getValue()) {
+                    FontManager.yaHei16.drawString(value.getName(), (int) windowX + 5 + 10, (int) settingY, -1);
+                    RenderUtils.drawRoundedRect2(windowX + 5 + 125.0f, settingY, windowX + 5 + 150.0f, settingY + 12.0f, 5.0f, new Color(34, 94, 181).getRGB());
+                    RenderUtils.drawCircle(windowX + 5 + 131.0f + value.anim, settingY + 6.0f, 4.0f, 0.1f, true, -1);
+                } else {
+                    FontManager.yaHei16.drawString(value.getName(), (int) windowX + 5 + 10, (int) settingY, new Color(61, 62, 65).getRGB());
+                    RenderUtils.drawRoundedRect2(windowX + 5 + 125.0f, settingY, windowX + 5 + 150.0f, settingY + 12.0f, 5.0f, new Color(50, 49, 53).getRGB());
+                    RenderUtils.drawRoundedRect2(windowX + 5 + 126.0f, settingY + 1.0f, windowX + 5 + 149.0f, settingY + 11.0f, 4.0f, new Color(31, 27, 31).getRGB());
+                    RenderUtils.drawCircle(windowX + 5 + 131.0f + value.anim, settingY + 6.0f, 4.0f, 0.1f, true, new Color(50, 49, 53).getRGB());
+                }
+                if (Wrapper.isHovered(windowX + 5 + 125.0f, settingY, windowX + 5 + 150.0f, settingY + 12.0f, mouseX, mouseY) && Mouse.isButtonDown(0) && !settingEnableDown) {
+                    value.setValue(!value.getValue());
+                    settingEnableDown = true;
+                }
+                value.anim = value.getValue() ? (float) RenderUtils.getAnimationState(value.anim, 13.0, 50.0) : (float) RenderUtils.getAnimationState(value.anim, 0.0, 50.0);
+
+                settingY += 20;
+            }
+
+            if (!Mouse.isButtonDown(0)) {
+                settingEnableDown = false;
             }
         }
     }

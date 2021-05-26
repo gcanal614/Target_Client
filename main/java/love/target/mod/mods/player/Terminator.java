@@ -5,6 +5,8 @@ import love.target.events.EventPreUpdate;
 import love.target.mod.Mod;
 import love.target.mod.value.values.BooleanValue;
 import love.target.mod.value.values.NumberValue;
+import love.target.notification.Notification;
+import love.target.notification.NotificationManager;
 import love.target.utils.RotationUtil;
 import love.target.utils.TimerUtil;
 import net.minecraft.client.settings.KeyBinding;
@@ -29,6 +31,7 @@ public class Terminator extends Mod {
     private final BooleanValue animal = new BooleanValue("Animal",false);
 
     private final TimerUtil cpsTimerUtil = new TimerUtil();
+    private EntityLivingBase lastEntity;
 
     public Terminator() {
         super("Terminator", Category.PLAYER);
@@ -49,6 +52,11 @@ public class Terminator extends Mod {
 
         if (!inRangeEntities.isEmpty()) {
             EntityLivingBase currentEntity = inRangeEntities.get(0);
+
+            if (lastEntity == null || lastEntity != currentEntity) {
+                lastEntity = currentEntity;
+                NotificationManager.addNotification("Terminator","新目标 " + currentEntity.getName(), Notification.NotificationType.INFO,1500);
+            }
 
             if (currentEntity.isDead) {
                 inRangeEntities.clear();

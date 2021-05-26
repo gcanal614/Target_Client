@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 
 import love.target.mod.ModManager;
 import love.target.mod.mods.fight.HitBox;
+import love.target.mod.mods.world.Scaffold;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -627,7 +628,7 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+            boolean flag = (this.onGround && this.isSneaking() && this instanceof EntityPlayer) || (this instanceof EntityPlayer && Scaffold.safeWalk.getValue() && ModManager.getModEnableByName("Scaffold"));
 
             if (flag)
             {

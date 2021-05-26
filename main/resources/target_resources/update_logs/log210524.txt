@@ -1,2 +1,15 @@
 增加AutoPlay (Mod)
+增加FastThrow (Mod)
+增加Blink (Mod)
+增加AutoTool (Mod)
+增加FastEat (Mod)
+增加NoRotation (Mod)
+增加Grumm_Dinnerbone (Mod)
+增加MoreParticle (Mod)
+增加Assassinate (Mod)
+增加Spider (Mod)
+增加AutoRespawn (Mod)
 增加TabGuiDesigner
+Scaffold增加Delay SafeWalk
+增加Notification
+修复开启ScreenMove时Terminator不能自动追踪的问题

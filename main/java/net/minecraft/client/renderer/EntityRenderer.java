@@ -2232,7 +2232,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
         GlStateManager.translate(0.0F, 0.0F, -2000.0F);
-        NotificationManager.draw(scaledresolution,mc);
+        NotificationManager.draw(scaledresolution);
     }
 
     /**

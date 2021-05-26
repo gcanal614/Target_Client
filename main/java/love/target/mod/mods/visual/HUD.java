@@ -20,19 +20,23 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.awt.*;
+
 public class HUD extends Mod {
     private final TextValue clientName = new TextValue("ClientName","Target");
     public static final ModeValue arrayListColorMode = new ModeValue("ArrayListColor","White",new String[]{"White","Custom","Rainbow","Fade"});
     public static final ModeValue arrayListEdge = new ModeValue("ArrayListEdge","Right",new String[]{"Right","Left"});
     public static final ModeValue arrayListYWay = new ModeValue("ArrayListWay","Down",new String[]{"Down","Up"});
     public static final ColorValue arrayListCustomColor = new ColorValue("ArrayListCustomColor",-1);
+    public static final ColorValue tabGuiColor = new ColorValue("TabGuiColor",new Color(179, 0, 255).getRGB());
     public static final BooleanValue arrayListSort = new BooleanValue("ArrayListSort",true);
+    public static final BooleanValue info = new BooleanValue("Info",true);
 
     public static String clientNameRender;
 
     public HUD() {
         super("HUD", Category.VISUAL);
-        addValues(arrayListColorMode,arrayListEdge,arrayListYWay,clientName,arrayListCustomColor,arrayListSort);
+        addValues(arrayListColorMode,arrayListEdge,arrayListYWay,clientName,arrayListCustomColor,tabGuiColor,arrayListSort,info);
     }
 
     @EventTarget
@@ -68,12 +72,13 @@ public class HUD extends Mod {
         int ychat = mc.ingameGUI.getChatGUI().getChatOpen() ? 4 : -10;
         String xyz = "X:" + (int)mc.player.posX + " Y:" + (int)mc.player.posY + " Z:" + (int)mc.player.posZ + " Blocks:" + Wrapper.speedBsString(mc.player,2);
 
-
-        if (mc.ingameGUI.getChatGUI().getChatOpen()) {
-            FontManager.yaHei16.drawStringWithShadow(xyz + " FPS:" + Minecraft.getDebugFPS(), 3, e.getScaledResolution().getScaledHeight() - FontManager.yaHei16.FONT_HEIGHT - 12 - ychat, -1);
-        } else {
-            FontManager.yaHei16.drawStringWithShadow(xyz, 3, e.getScaledResolution().getScaledHeight() - FontManager.yaHei16.FONT_HEIGHT - 12 - ychat, -1);
-            FontManager.yaHei16.drawStringWithShadow("FPS:" + Minecraft.getDebugFPS(), 3, e.getScaledResolution().getScaledHeight() - (FontManager.yaHei16.FONT_HEIGHT * 2) - 12 - ychat, -1);
+        if (info.getValue()) {
+            if (mc.ingameGUI.getChatGUI().getChatOpen()) {
+                FontManager.yaHei16.drawStringWithShadow(xyz + " FPS:" + Minecraft.getDebugFPS(), 3, e.getScaledResolution().getScaledHeight() - FontManager.yaHei16.FONT_HEIGHT - 12 - ychat, -1);
+            } else {
+                FontManager.yaHei16.drawStringWithShadow(xyz, 3, e.getScaledResolution().getScaledHeight() - FontManager.yaHei16.FONT_HEIGHT - 12 - ychat, -1);
+                FontManager.yaHei16.drawStringWithShadow("FPS:" + Minecraft.getDebugFPS(), 3, e.getScaledResolution().getScaledHeight() - (FontManager.yaHei16.FONT_HEIGHT * 2) - 12 - ychat, -1);
+            }
         }
         int potionTextY = 0;
         for (PotionEffect effect : mc.player.getActivePotionEffects()) {

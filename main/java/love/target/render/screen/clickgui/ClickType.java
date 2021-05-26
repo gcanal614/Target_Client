@@ -4,6 +4,7 @@ public enum ClickType {
     HOME("Home"),
     DESIGNER("Designer"),
     CONFIG("Config"),
+    CLIENT_SETTING("Setting"),
     CONSOLE("Console");
 
     private final String name;

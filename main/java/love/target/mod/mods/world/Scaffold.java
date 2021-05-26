@@ -1,6 +1,5 @@
 package love.target.mod.mods.world;
 
-import love.target.Wrapper;
 import love.target.eventapi.EventTarget;
 import love.target.eventapi.types.Priority;
 import love.target.events.Event2D;
@@ -32,28 +31,31 @@ import java.util.List;
 
 public class Scaffold extends Mod {
     private final NumberValue towerBoostValue = new NumberValue("TowerBoost",1.0,1.0,5.0,0.1);
+    private final NumberValue delayValue = new NumberValue("DelayValue",0.0,0.0,1000.0,1.0);
     private final BooleanValue tower = new BooleanValue("Tower", true);
     private final BooleanValue swing = new BooleanValue("Swing", false);
     private final BooleanValue movetower = new BooleanValue("MoveTower", true);
-    public final BooleanValue noSprint = new BooleanValue("NoSprint", false);
-    public final BooleanValue fixedSpeed = new BooleanValue("FixedSpeed", false);
-    public final BooleanValue keepYValue = new BooleanValue("KeepY", false);
-    public static final List<Block> invalidBlocks = Arrays.asList(Blocks.enchanting_table, Blocks.furnace, Blocks.carpet, Blocks.crafting_table, Blocks.trapped_chest, Blocks.chest, Blocks.dispenser, Blocks.air, Blocks.water, Blocks.lava, Blocks.flowing_water, Blocks.flowing_lava, Blocks.sand, Blocks.snow_layer, Blocks.torch, Blocks.anvil, Blocks.jukebox, Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.noteblock, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_slab, Blocks.wooden_slab, Blocks.stone_slab2, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.yellow_flower, Blocks.red_flower, Blocks.anvil, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.cactus, Blocks.ladder, Blocks.web, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest);
+    private final BooleanValue noSprint = new BooleanValue("NoSprint", false);
+    private final BooleanValue fixedSpeed = new BooleanValue("FixedSpeed", false);
+    private final BooleanValue keepYValue = new BooleanValue("KeepY", false);
+    public static final BooleanValue safeWalk = new BooleanValue("SafeWalk", false);
+
+    private static final List<Block> invalidBlocks = Arrays.asList(Blocks.enchanting_table, Blocks.furnace, Blocks.carpet, Blocks.crafting_table, Blocks.trapped_chest, Blocks.chest, Blocks.dispenser, Blocks.air, Blocks.water, Blocks.lava, Blocks.flowing_water, Blocks.flowing_lava, Blocks.sand, Blocks.snow_layer, Blocks.torch, Blocks.anvil, Blocks.jukebox, Blocks.stone_button, Blocks.wooden_button, Blocks.lever, Blocks.noteblock, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.wooden_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_slab, Blocks.wooden_slab, Blocks.stone_slab2, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.yellow_flower, Blocks.red_flower, Blocks.anvil, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.cactus, Blocks.ladder, Blocks.web, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest);
     private final List<Block> validBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava);
     private final BlockPos[] blockPositions = new BlockPos[]{new BlockPos(-1, 0, 0), new BlockPos(1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(0, 0, 1)};
     private final EnumFacing[] facings = new EnumFacing[]{EnumFacing.EAST, EnumFacing.WEST, EnumFacing.SOUTH, EnumFacing.NORTH};
     private final TimerUtil towerStopwatch = new TimerUtil();
+    private final TimerUtil delayTimerUtil = new TimerUtil();
     private static float qwerty;
     private ItemStack currentblock;
     private float jumpGround = 0.0f;
     private float rotationYawSave;
     private float rotationPitchSave;
-
     private int keepY;
 
     public Scaffold() {
         super("Scaffold", Category.WORLD);
-        this.addValues(towerBoostValue,this.tower, this.movetower, this.swing,this.noSprint,fixedSpeed,keepYValue);
+        this.addValues(towerBoostValue,delayValue,this.tower, this.movetower, this.swing,this.noSprint,fixedSpeed,keepYValue,safeWalk);
     }
 
     @Override
@@ -104,8 +106,8 @@ public class Scaffold extends Mod {
         event.setYaw(rotationYawSave);
         mc.player.rotationYawHead = rotationYawSave;
         mc.player.renderYawOffset = rotationYawSave;
-        mc.player.rotationPitchHead = 79.44f;
-        event.setPitch(79.44f);
+        mc.player.rotationPitchHead = rotationPitchSave;
+        event.setPitch(rotationPitchSave);
 
         if (mc.player.onGround) {
             mc.timer.timerSpeed = 1.0f;
@@ -189,6 +191,11 @@ public class Scaffold extends Mod {
 
     @EventTarget
     private void onPostUpdate(EventPostUpdate event) {
+        if (!delayTimerUtil.hasReached(delayValue.getValue().longValue())) {
+            return;
+        } else {
+            delayTimerUtil.reset();
+        }
         if (this.getBlockCount() <= 0) {
             int spoofSlot = this.getBestSpoofSlot();
             this.getBlock(spoofSlot);

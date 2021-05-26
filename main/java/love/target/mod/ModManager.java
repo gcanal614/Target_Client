@@ -6,6 +6,7 @@ import love.target.command.CommandManager;
 import love.target.command.commands.ModValueSetCommand;
 import love.target.mod.mods.fight.*;
 import love.target.mod.mods.item.AutoArmor;
+import love.target.mod.mods.item.AutoTool;
 import love.target.mod.mods.item.ChestStealer;
 import love.target.mod.mods.item.InventoryManager;
 import love.target.mod.mods.move.*;
@@ -31,17 +32,17 @@ public class ModManager {
      */
     public static void init() {
         /* FIGHT */
-        registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical(),new Clicker(),new HitBox(),new Reach(),new AutoAim());
+        registerMods(new KillAura(),new Velocity(),new AntiBot(),new AutoPot(),new AutoSoup(),new Critical(),new Clicker(),new HitBox(),new Reach(),new AutoAim(),new FastThrow(),new Assassinate());
         /* VISUAL */
-        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD(),new NoHurtCam());
+        registerMods(new HUD(),new NightVision(),new ESP(),new PlayerList(),new SpeedList(),new BlockHitting(),new CamaraNoClip(),new TargetHUD(),new ChestESP(),new InventoryHUD(),new NoHurtCam(),new Grumm_Dinnerbone(),new MoreParticle());
         /* MOVE */
-        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint(),new Clip(),new LongJump(),new NoWaterPush(),new Jesus());
+        registerMods(new Sprint(),new Speed(),new NoSlow(),new TargetStrafe(),new ScreenMove(),new Fly(),new KeepSprint(),new Clip(),new LongJump(),new NoWaterPush(),new Jesus(),new Blink(),new Spider());
         /* PLAYER */
-        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace(),new SpeedMine(),new AntiCactus());
+        registerMods(new Terminator(),new AntiVoid(),new NoFall(),new ChatBypass(),new FastPlace(),new SpeedMine(),new AntiCactus(),new FastEat());
         /* ITEM */
-        registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager(),new AutoSword());
+        registerMods(new ChestStealer(),new AutoArmor(),new InventoryManager(),new AutoSword(),new AutoTool());
         /* OTHER */
-        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug(),new PenShen(),new AutoPlay(),new AntiTrap(),new GhostHand(),new AutoFish());
+        registerMods(new Teams(),new TestMod(),new Timer(),new PingSpoof(),new Debug(),new PenShen(),new AutoPlay(),new AntiTrap(),new GhostHand(),new AutoFish(),new AutoRespawn());
         /* WORLD */
         registerMods(new Scaffold(),new AutoDoor(),new Breaker());
 

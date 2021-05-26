@@ -11,6 +11,7 @@ import love.target.mod.ModManager;
 import love.target.mod.value.Value;
 import love.target.mod.value.ValueType;
 import love.target.mod.value.values.*;
+import love.target.other.ClientSettings;
 import love.target.render.screen.designer.GuiDesigner;
 
 import java.io.File;
@@ -38,6 +39,7 @@ public class ConfigManager {
         StringBuilder modBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
         StringBuilder designerBuilder = new StringBuilder();
+        StringBuilder clientSettingBuilder = new StringBuilder();
 
         for (Mod m : ModManager.getMods()) {
             modBuilder.append(m.getName()).append(":").append(m.isEnabled()).append(":").append(m.getKeyCode()).append("\n");
@@ -50,9 +52,14 @@ public class ConfigManager {
             designerBuilder.append(designer.getDesignerType()).append(":").append(designer.getX()).append(":").append(designer.getY()).append("\n");
         }
 
+        for (BooleanValue setting : Wrapper.getClientSettingList()) {
+            clientSettingBuilder.append(setting.getName()).append(":").append(setting.getValue()).append("\n");
+        }
+
         FileUtils.writeStringTo(modBuilder.toString(),path,"mod_enable_bind.txt");
         FileUtils.writeStringTo(valueBuilder.toString(),path,"value.txt");
         FileUtils.writeStringTo(designerBuilder.toString(),path,"designer.txt");
+        FileUtils.writeStringTo(clientSettingBuilder.toString(),path,"client_settings.txt");
 
         if (configIn != Wrapper.getNormalConfig()) {
             addConfigs(configIn);
@@ -123,6 +130,7 @@ public class ConfigManager {
             if (configIn != Wrapper.getNormalConfig()) {
                 GuiDesigner.designers.clear();
             }
+
             for (String s : FileUtils.readLine(new FileInputStream(path + "designer.txt"))) {
                 Designer.DesignerType designerType = Designer.DesignerType.toDesignerTypeByString(s.split(":")[0]);
                 int designerX = Integer.parseInt(s.split(":")[1]);
@@ -147,6 +155,13 @@ public class ConfigManager {
                     case TAB_GUI:
                         GuiDesigner.addDesigner(new TabGuiDesigner(designerX,designerY));
                         break;
+                }
+            }
+
+            for (String s : FileUtils.readLine(new FileInputStream(path + "client_settings.txt"))) {
+                BooleanValue value = ClientSettings.getValueByName(s.split(":")[0]);
+                if (value != null) {
+                    value.setValue(Boolean.parseBoolean(s.split(":")[1]));
                 }
             }
         } catch (Exception e) {

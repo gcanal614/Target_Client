@@ -4,6 +4,7 @@ import love.target.Wrapper;
 import love.target.designer.Designer;
 import love.target.mod.Mod;
 import love.target.mod.ModManager;
+import love.target.mod.mods.visual.HUD;
 import love.target.other.rightclickmenu.NormalRightClickMenu;
 import love.target.other.rightclickmenu.RightClickMenu;
 import love.target.render.font.FontManager;
@@ -75,7 +76,7 @@ public class TabGuiDesigner extends Designer {
             FontManager.yaHei16.drawString("TabGui X:" + x + " Y:" + y, x - 2, y - 13, -1);
         }
         RenderUtils.drawRect(x,y,x + 50,y + (Mod.Category.values().length * 12),new Color(0,0,0,50).getRGB());
-        RenderUtils.drawRect(x,animationY,x + 50,animationY + 12,new Color(179, 0, 255).getRGB());
+        RenderUtils.drawRect(x,animationY,x + 50,animationY + 12,HUD.tabGuiColor.getValue());
         float textY = y;
         float categoryY = y;
         for (Mod.Category category : Mod.Category.values()) {
@@ -90,7 +91,7 @@ public class TabGuiDesigner extends Designer {
 
         if (status == Status.MOD) {
             RenderUtils.drawRect(x + 52,categoryY,x + 135,categoryY + (ModManager.getModsByCategory(selectedCategory).size() * 12),new Color(0,0,0,50).getRGB());
-            RenderUtils.drawRect(x + 52,animationYForMod,x + 135,animationYForMod + 12,new Color(179, 0, 255).getRGB());
+            RenderUtils.drawRect(x + 52,animationYForMod,x + 135,animationYForMod + 12, HUD.tabGuiColor.getValue());
             float modY = categoryY;
             for (Mod mod : ModManager.getModsByCategory(selectedCategory)) {
                 if (selectedMod == mod) {

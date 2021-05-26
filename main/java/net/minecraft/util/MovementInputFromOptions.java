@@ -18,7 +18,8 @@ public class MovementInputFromOptions extends MovementInput
 
     public void updatePlayerMoveState()
     {
-        if (ModManager.getModEnableByName("ScreenMove") && ObjectUtils.reverse(Minecraft.getMinecraft().currentScreen instanceof GuiChat)) {
+
+        if (ModManager.getModEnableByName("ScreenMove") && ObjectUtils.reverse(Minecraft.getMinecraft().currentScreen instanceof GuiChat) && Minecraft.getMinecraft().currentScreen != null) {
             this.moveStrafe = 0.0F;
             this.moveForward = 0.0F;
 

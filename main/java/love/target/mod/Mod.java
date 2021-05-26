@@ -2,6 +2,9 @@ package love.target.mod;
 
 import love.target.eventapi.EventManager;
 import love.target.mod.value.Value;
+import love.target.notification.Notification;
+import love.target.notification.NotificationManager;
+import love.target.other.ClientSettings;
 import net.minecraft.client.Minecraft;
 
 import java.util.Arrays;
@@ -61,10 +64,16 @@ public class Mod {
             if (mc.world != null) {
                 this.onEnable();
             }
+            if (ClientSettings.MOD_ENABLE_NOTIFICATION_VALUE.getValue()) {
+                NotificationManager.addNotification(getName(), "Enable " + getName(), Notification.NotificationType.SUCCESS, 1000);
+            }
         } else {
             EventManager.unregister(this);
             if (mc.world != null) {
                 this.onDisable();
+            }
+            if (ClientSettings.MOD_ENABLE_NOTIFICATION_VALUE.getValue()) {
+                NotificationManager.addNotification(getName(), "Disable " + getName(), Notification.NotificationType.ERROR, 1000);
             }
         }
     }

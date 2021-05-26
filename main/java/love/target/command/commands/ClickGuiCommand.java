@@ -10,7 +10,14 @@ public class ClickGuiCommand extends Command {
 
     @Override
     public void run(String[] args) {
-        mc.displayGuiScreen(new ClickGui());
         super.run(args);
+        new Thread(() -> {
+            try {
+                Thread.sleep(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mc.displayGuiScreen(new ClickGui());
+        },"Open ClickGui Thread").start();
     }
 }
